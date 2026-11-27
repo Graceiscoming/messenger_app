@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+<circle cx="60" cy="60" r="54" fill="#d6e4ff" stroke="#3a3a3a" stroke-width="3"/>
+<path d="M34 52 Q42 58 50 52 M70 52 Q78 58 86 52" fill="none" stroke="#3a3a3a" stroke-width="4" stroke-linecap="round"/><ellipse cx="60" cy="76" rx="7" ry="5" fill="#3a3a3a"/><text x="86" y="34" font-family="sans-serif" font-size="18" font-weight="700" fill="#3a3a3a">z</text><text x="98" y="22" font-family="sans-serif" font-size="13" font-weight="700" fill="#3a3a3a">z</text>
+<text x="60" y="112" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#3a3a3a">ZZZ</text>
+</svg>

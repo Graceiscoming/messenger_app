@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+<circle cx="60" cy="60" r="54" fill="#ff9f8f" stroke="#3a3a3a" stroke-width="3"/>
+<path d="M32 38 l20 10 M88 38 l-20 10" stroke="#3a3a3a" stroke-width="5" stroke-linecap="round"/><circle cx="42" cy="56" r="4" fill="#3a3a3a"/><circle cx="78" cy="56" r="4" fill="#3a3a3a"/><path d="M42 84 Q60 68 78 84" fill="none" stroke="#3a3a3a" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="112" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#3a3a3a">ANGRY</text>
+</svg>

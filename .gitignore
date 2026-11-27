@@ -1,0 +1,45 @@
+# Build output
+bin/
+obj/
+**/bin/
+**/obj/
+dist/
+out/
+
+# Dependencies
+node_modules/
+
+# Secrets / local env (keep .env.example tracked)
+.env
+.env.*
+!.env.example
+
+# Runtime data
+uploads/
+data/
+
+# Visual Studio / IDE
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Logs / coverage / test results
+*.log
+TestResults/
+coverage/
+*.trx
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
