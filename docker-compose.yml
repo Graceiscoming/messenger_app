@@ -1,0 +1,54 @@
+name: messenger
+
+# รันทั้งระบบ: docker compose up --build  (ต้องมีไฟล์ .env ก่อน — ดู .env.example)
+# เปิดเว็บที่ http://localhost  (API อยู่หลัง nginx ที่ /api และ /hubs)
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: messenger
+      POSTGRES_USER: messenger
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?ต้องตั้ง DB_PASSWORD ใน .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U messenger -d messenger"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    restart: unless-stopped
+    environment:
+      ConnectionStrings__Default: Host=db;Port=5432;Database=messenger;Username=messenger;Password=${DB_PASSWORD:?ต้องตั้ง DB_PASSWORD ใน .env}
+      Jwt__Key: ${JWT_KEY:?ต้องตั้ง JWT_KEY ใน .env (อย่างน้อย 32 ตัวอักษร)}
+      Storage__UploadPath: /data/uploads
+      RunMigrations: "true"
+      ASPNETCORE_URLS: http://+:8080
+      Cors__Origins__0: ${CORS_ORIGIN:-http://localhost}
+    expose:
+      - "8080"
+    volumes:
+      - uploads:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata: {}
+  uploads: {}

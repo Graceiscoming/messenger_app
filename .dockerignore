@@ -1,0 +1,20 @@
+# Root build context is used by src/Dockerfile (API build).
+# Keep only what the API build needs.
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+.git/
+.github/
+.claude/
+.env
+.env.*
+!.env.example
+docs/
+tests/
+web/
+scripts/
+**/node_modules/
+**/Dockerfile
+**/*.md
+uploads/
