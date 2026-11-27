@@ -1,4 +1,5 @@
 using Messenger.Domain.Abstractions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,12 @@ public sealed class ApiFactory(TestClock clock) : WebApplicationFactory<Program>
         {
             services.RemoveAll<IClock>();
             services.AddSingleton<IClock>(clock);
+            // Tokens are issued with TestClock time; validate lifetime against the same clock.
+            services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, o =>
+            {
+                o.TokenValidationParameters.LifetimeValidator = (nb, exp, _, _) =>
+                    (nb is null || nb <= clock.UtcNow.AddMinutes(1)) && (exp is null || exp > clock.UtcNow);
+            });
         });
     }
 }

@@ -67,7 +67,7 @@ export default function MessageBubble({
           {!mine && <MetaBlock readLabel={null} time={msg.createdAt} />}
           {!msg.isUnsent && (
             <div className="menu-wrap msg-menu">
-              <button className="icon-btn" aria-label="เมนูข้อความ" onClick={onToggleMenu}>⋯</button>
+              <button className="icon-btn" aria-label="เมนูข้อความ" onClick={(e) => { e.stopPropagation(); onToggleMenu() }}>⋯</button>
               {menuOpen && (
                 <div className={`menu ${mine ? 'left' : ''}`}>
                   <button onClick={onReply}>ตอบกลับ</button>

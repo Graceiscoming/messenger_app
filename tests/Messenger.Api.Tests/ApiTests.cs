@@ -248,7 +248,10 @@ public class UnsendTests(ApiFixture fx)
         var (a, _, conv) = await Api.FriendPair(fx.TimeFactory);
         var m = await Api.SendText(a, conv.Id, "old");
         fx.TimeClock.Advance(TimeSpan.FromHours(25));
-        Assert.Equal(HttpStatusCode.Conflict, (await a.Http.DeleteAsync($"/api/v1/messages/{m.Id}")).StatusCode);
+        // Access token (15 min) expired on the test clock; log in again.
+        var login = await fx.TimeFactory.CreateClient().PostAsJsonAsync("/api/v1/auth/login", new LoginDto(a.Username, a.Password), Json.Options);
+        var fresh = new TestUser(fx.TimeFactory, await a.Read<AuthResultDto>(login), a.Password);
+        Assert.Equal(HttpStatusCode.Conflict, (await fresh.Http.DeleteAsync($"/api/v1/messages/{m.Id}")).StatusCode);
     }
 }
 
