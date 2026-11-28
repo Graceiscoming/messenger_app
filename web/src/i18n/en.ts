@@ -4,6 +4,8 @@ import type { Dict } from './th'
 export const en: Dict = {
   // common
   'common.loading': 'Loading...',
+  'intro.tagline': 'Chat with friends, anywhere',
+  'intro.skip': 'Tap to skip',
   'common.cancel': 'Cancel',
   'common.save': 'Save',
   'common.close': 'Close',

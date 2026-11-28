@@ -3,6 +3,8 @@
 export const th = {
   // common
   'common.loading': 'กำลังโหลด...',
+  'intro.tagline': 'คุยกับเพื่อนได้ทุกที่',
+  'intro.skip': 'แตะเพื่อข้าม',
   'common.cancel': 'ยกเลิก',
   'common.save': 'บันทึก',
   'common.close': 'ปิด',

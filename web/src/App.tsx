@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ApiError } from './api/client'
+import IntroShutter from './components/IntroShutter'
 import { LoginPage, RegisterPage } from './pages/AuthPages'
 import ChatRoom from './pages/ChatRoom'
 import MainLayout, { EmptyChat } from './pages/MainLayout'
@@ -20,6 +21,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <IntroShutter />
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
