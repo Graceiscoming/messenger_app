@@ -1,4 +1,6 @@
 import type { MessageDto } from '../types/api'
+import { translate } from '../i18n'
+import { isLocked } from '../store/appLock'
 import { getSettings } from '../store/settings'
 import { messagePreview } from './format'
 
@@ -32,7 +34,9 @@ export function notifyIncoming(msg: MessageDto, meId: string) {
   if (s.desktopNotifications && document.visibilityState === 'hidden'
     && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
     try {
-      new Notification(msg.sender.displayName, { body: messagePreview(msg, meId), tag: msg.conversationId })
+      // While the PIN lock is on, don't leak who wrote what on the lock screen / OS notification centre.
+      if (isLocked(meId)) new Notification('KubChat', { body: translate('pin.notifyLocked'), tag: 'kubchat-locked' })
+      else new Notification(msg.sender.displayName, { body: messagePreview(msg, meId), tag: msg.conversationId })
     } catch { /* ignore */ }
   }
 }

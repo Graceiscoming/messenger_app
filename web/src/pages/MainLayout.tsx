@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { Navigate, Outlet, useMatch } from 'react-router-dom'
+import AppLock from '../components/AppLock'
 import Avatar from '../components/Avatar'
 import BrandLogo from '../components/BrandLogo'
 import ConversationList from '../components/ConversationList'
@@ -14,6 +15,7 @@ import ThemeToggle from '../components/ThemeToggle'
 import { useConversations, useRequests } from '../hooks/queries'
 import { useRealtime } from '../hubs/useRealtime'
 import { useT, type TKey } from '../i18n'
+import { useAppLock } from '../store/appLock'
 import { useAuth } from '../store/authContext'
 
 type Tab = 'chats' | 'friends' | 'requests'
@@ -43,6 +45,8 @@ function Shell({ meId }: { meId: string }) {
   const { user } = useAuth()
   useRealtime(meId)
   const inChat = !!useMatch('/c/:id')
+  // While the PIN lock is up, the UI behind it can't be focused or clicked.
+  const { locked } = useAppLock(meId)
   const [tab, setTab] = useState<Tab>('chats')
   const [showGroup, setShowGroup] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
@@ -54,7 +58,7 @@ function Shell({ meId }: { meId: string }) {
 
   return (
     <div className={`app ${inChat ? 'in-chat' : ''}`}>
-      <nav className="rail" aria-label="Main">
+      <nav className="rail" aria-label="Main" inert={locked}>
         <div className="rail-logo" aria-hidden="true"><BrandLogo /></div>
         <RailButton active={tab === 'chats'} label={t('tab.chats')} badge={unread} onClick={() => setTab('chats')}><ChatIcon /></RailButton>
         <RailButton active={tab === 'friends'} label={t('tab.friends')} onClick={() => setTab('friends')}><UsersIcon /></RailButton>
@@ -67,7 +71,7 @@ function Shell({ meId }: { meId: string }) {
         </button>
       </nav>
 
-      <aside className="list-panel">
+      <aside className="list-panel" inert={locked}>
         <header className="panel-head">
           <h1>{t(TAB_TITLE[tab])}</h1>
           <div className="panel-head-actions">
@@ -82,12 +86,13 @@ function Shell({ meId }: { meId: string }) {
         {tab === 'requests' && <RequestsPanel />}
       </aside>
 
-      <main className="main">
+      <main className="main" inert={locked}>
         <Outlet />
       </main>
-      {showGroup && <CreateGroupDialog onClose={() => setShowGroup(false)} />}
-      {showProfile && <ProfileDialog onClose={() => setShowProfile(false)} />}
-      {showSettings && <SettingsDialog onClose={() => setShowSettings(false)} onOpenProfile={() => { setShowSettings(false); setShowProfile(true) }} />}
+      {!locked && showGroup && <CreateGroupDialog onClose={() => setShowGroup(false)} />}
+      {!locked && showProfile && <ProfileDialog onClose={() => setShowProfile(false)} />}
+      {!locked && showSettings && <SettingsDialog onClose={() => setShowSettings(false)} onOpenProfile={() => { setShowSettings(false); setShowProfile(true) }} />}
+      <AppLock userId={meId} />
     </div>
   )
 }

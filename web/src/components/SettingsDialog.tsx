@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 import { APP_VERSION } from '../constants'
 import { useT } from '../i18n'
 import { useAuth, useMe } from '../store/authContext'
@@ -6,6 +6,8 @@ import { updateSettings, useSettings, type FontSize, type Language, type ThemeSe
 import Avatar from './Avatar'
 import { LogoutIcon } from './icons'
 import Modal from './Modal'
+import PinSettings from './PinSettings'
+import { Row, Switch } from './SettingControls'
 
 function Segmented<T extends string>({ value, options, onChange, label }: {
   value: T
@@ -20,26 +22,6 @@ function Segmented<T extends string>({ value, options, onChange, label }: {
           {o.label}
         </button>
       ))}
-    </div>
-  )
-}
-
-function Switch({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
-  return (
-    <button role="switch" aria-checked={checked} aria-label={label} className={`switch${checked ? ' on' : ''}`} onClick={() => onChange(!checked)}>
-      <span className="knob" />
-    </button>
-  )
-}
-
-function Row({ title, hint, children }: { title: string; hint?: string; children: ReactNode }) {
-  return (
-    <div className="setting-row">
-      <div className="setting-text">
-        <strong>{title}</strong>
-        {hint && <span>{hint}</span>}
-      </div>
-      {children}
     </div>
   )
 }
@@ -98,6 +80,8 @@ export default function SettingsDialog({ onClose, onOpenProfile }: { onClose: ()
         </Row>
         {notifHint && <p className="error" role="alert">{notifHint}</p>}
       </section>
+
+      <PinSettings userId={me.id} />
 
       <section className="settings-section">
         <h3>{t('settings.account')}</h3>

@@ -5,6 +5,7 @@ import { AuthContext, type AuthContextValue, type AuthStatus } from './authConte
 import { refreshSession, setAuthLostHandler, tokens } from '../api/client'
 import { authApi } from '../api/endpoints'
 import { clearAuthedImages } from '../hooks/useAuthedImage'
+import { unlockApp } from './appLock'
 
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -46,9 +47,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     status,
     user,
     setUser,
-    login: async (username, password) => applyResult(await authApi.login({ username, password })),
-    register: async (username, displayName, password) =>
-      applyResult(await authApi.register({ username, displayName, password })),
+    // A fresh password sign-in already proves who the user is, so it also opens the PIN lock.
+    login: async (username, password) => { applyResult(await authApi.login({ username, password })); unlockApp() },
+    register: async (username, displayName, password) => {
+      applyResult(await authApi.register({ username, displayName, password }))
+      unlockApp()
+    },
     logout: async () => {
       const rt = tokens.refresh
       try { if (rt) await authApi.logout(rt) } catch { /* best effort */ }
