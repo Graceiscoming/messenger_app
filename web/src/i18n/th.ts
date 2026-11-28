@@ -48,7 +48,7 @@ export const th = {
   // navigation
   'tab.chats': 'แชท',
   'tab.friends': 'เพื่อน',
-  'tab.requests': 'คำขอ',
+  'tab.requests': 'เพิ่มเพื่อน',
   'tab.settings': 'ตั้งค่า',
   'theme.toLight': 'เปลี่ยนเป็นโหมดสว่าง',
   'theme.toDark': 'เปลี่ยนเป็นโหมดมืด',
@@ -83,7 +83,8 @@ export const th = {
   'friends.add': 'เพิ่มเพื่อน',
   'friends.heading': 'เพื่อน ({n})',
   'friends.empty': 'ยังไม่มีเพื่อน',
-  'friends.emptyHint': 'ค้นหา username ด้านบนเพื่อส่งคำขอเป็นเพื่อน',
+  'friends.emptyHint': 'ไปที่แท็บ "เพิ่มเพื่อน" เพื่อค้นหา username และส่งคำขอเป็นเพื่อน',
+  'friends.filter': 'ค้นหาในรายชื่อเพื่อน',
   'friends.noMatch': 'ไม่พบเพื่อน',
   'friends.menu': 'เมนู',
   'friends.remove': 'ลบเพื่อน',

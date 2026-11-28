@@ -4,6 +4,7 @@ import { errorMessage } from '../api/client'
 import { friendsApi } from '../api/endpoints'
 import { keys, setRequests, useRequests } from '../hooks/queries'
 import { useT } from '../i18n'
+import AddFriendSearch from './AddFriendSearch'
 import Avatar from './Avatar'
 import { UserPlusIcon } from './icons'
 import { EmptyState, ListSkeleton } from './Skeletons'
@@ -29,6 +30,7 @@ export default function RequestsPanel() {
 
   return (
     <div className="panel">
+      <AddFriendSearch />
       {error && <p className="error pad" role="alert">{error}</p>}
       {isLoading && <ListSkeleton rows={3} />}
       {none && <EmptyState icon={<UserPlusIcon />} title={t('requests.none')} hint={t('requests.noneHint')} />}

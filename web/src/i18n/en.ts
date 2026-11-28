@@ -49,7 +49,7 @@ export const en: Dict = {
   // navigation
   'tab.chats': 'Chats',
   'tab.friends': 'Friends',
-  'tab.requests': 'Requests',
+  'tab.requests': 'Add friends',
   'tab.settings': 'Settings',
   'theme.toLight': 'Switch to light mode',
   'theme.toDark': 'Switch to dark mode',
@@ -84,7 +84,8 @@ export const en: Dict = {
   'friends.add': 'Add friend',
   'friends.heading': 'Friends ({n})',
   'friends.empty': 'No friends yet',
-  'friends.emptyHint': 'Search for a username above to send a friend request',
+  'friends.emptyHint': 'Go to the "Add friends" tab to search for a username and send a request',
+  'friends.filter': 'Search your friends',
   'friends.noMatch': 'No friends found',
   'friends.menu': 'Menu',
   'friends.remove': 'Remove friend',

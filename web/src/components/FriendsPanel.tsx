@@ -1,9 +1,9 @@
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { errorMessage } from '../api/client'
 import { conversationsApi, friendsApi, usersApi } from '../api/endpoints'
-import { keys, setFriends, setRequests, upsertConversation, useFriends, useRequests } from '../hooks/queries'
+import { setFriends, upsertConversation, useFriends } from '../hooks/queries'
 import { useT } from '../i18n'
 import { useMe } from '../store/authContext'
 import { useBlocked } from '../store/blocked'
@@ -18,36 +18,12 @@ export default function FriendsPanel() {
   const qc = useQueryClient()
   const navigate = useNavigate()
   const { data: friends, isLoading } = useFriends()
-  const { data: requests } = useRequests()
   const blocked = useBlocked(me.id)
 
   const [q, setQ] = useState('')
-  const [results, setResults] = useState<UserDto[] | null>(null)
-  const [searching, setSearching] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [menuFor, setMenuFor] = useState<string | null>(null)
   const [showBlocked, setShowBlocked] = useState(false)
-
-  const search = async (e: FormEvent) => {
-    e.preventDefault()
-    const term = q.trim()
-    if (!term) return setResults(null)
-    setSearching(true)
-    setError(null)
-    try { setResults(await usersApi.search(term)) } catch (err) { setError(errorMessage(err)) } finally { setSearching(false) }
-  }
-
-  const add = async (u: UserDto) => {
-    setError(null)
-    try {
-      const f = await friendsApi.send(u.username)
-      if (f.status === 'Pending') setRequests(qc, (r) => ({ ...r, outgoing: [f, ...r.outgoing.filter((x) => x.id !== f.id)] }))
-      else { // the other side had already requested us: auto-accepted
-        void qc.invalidateQueries({ queryKey: keys.friends })
-        void qc.invalidateQueries({ queryKey: keys.requests })
-      }
-    } catch (err) { setError(errorMessage(err)) }
-  }
 
   const open = async (f: FriendDto) => {
     setError(null)
@@ -86,51 +62,20 @@ export default function FriendsPanel() {
     } catch (err) { setError(errorMessage(err)) }
   }
 
-  const isFriend = (id: string) => friends?.some((f) => f.user.id === id)
-  const pendingWith = (id: string) =>
-    requests?.outgoing.some((r) => r.addressee.id === id) || requests?.incoming.some((r) => r.requester.id === id)
-  const filtered = (friends ?? []).filter((f) =>
-    !results && f.user.displayName.toLowerCase().includes(q.trim().toLowerCase()))
+  const filtered = (friends ?? []).filter((f) => {
+    const term = q.trim().toLowerCase()
+    return !term || f.user.displayName.toLowerCase().includes(term) || f.user.username.toLowerCase().includes(term)
+  })
 
   return (
     <div className="panel" onClick={() => setMenuFor(null)}>
-      <form className="panel-tools" onSubmit={search}>
+      <div className="panel-tools">
         <label className="search-box">
           <SearchIcon />
-          <input
-            placeholder={t('friends.searchPlaceholder')}
-            aria-label={t('friends.searchPlaceholder')}
-            value={q}
-            onChange={(e) => { setQ(e.target.value); if (!e.target.value) setResults(null) }}
-          />
+          <input placeholder={t('friends.filter')} aria-label={t('friends.filter')} value={q} onChange={(e) => setQ(e.target.value)} />
         </label>
-        <button className="btn small" disabled={searching || !q.trim()}>{t('friends.search')}</button>
-      </form>
+      </div>
       {error && <p className="error pad" role="alert">{error}</p>}
-
-      {results && (
-        <section>
-          <h3 className="section-title">
-            {t('friends.results')}
-            <button className="link" onClick={() => { setResults(null); setQ('') }}>{t('common.clear')}</button>
-          </h3>
-          <ul className="list">
-            {results.length === 0 && <li className="empty">{t('friends.noUser')}</li>}
-            {results.map((u) => (
-              <li key={u.id} className="list-item static">
-                <Avatar url={u.avatarUrl} name={u.displayName} />
-                <div className="list-main">
-                  <span className="list-title">{u.displayName}</span>
-                  <span className="list-sub">@{u.username}</span>
-                </div>
-                {isFriend(u.id) ? <span className="muted">{t('friends.isFriend')}</span>
-                  : pendingWith(u.id) ? <span className="muted">{t('friends.pending')}</span>
-                  : <button className="btn small primary" onClick={() => add(u)}>{t('friends.add')}</button>}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       <h3 className="section-title">{t('friends.heading', { n: friends?.length ?? 0 })}</h3>
       {isLoading && <ListSkeleton rows={5} />}
