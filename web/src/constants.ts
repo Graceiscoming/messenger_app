@@ -10,3 +10,5 @@ export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'im
 
 export const TYPING_THROTTLE_MS = 2000
 export const TYPING_EXPIRE_MS = 4000
+
+export const APP_VERSION = '1.0.0'

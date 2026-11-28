@@ -1,11 +1,14 @@
 import { useAuthedImage } from '../hooks/useAuthedImage'
+import { useT } from '../i18n'
+import { UsersIcon } from './icons'
 
-const COLORS = ['#06c755', '#4aa3ff', '#ff8a5c', '#a78bfa', '#f472b6', '#14b8a6', '#eab308']
+// Avatar fallback hues; saturation/lightness are chosen so white initials keep contrast.
+const HUES = [152, 200, 24, 262, 330, 174, 38]
 
-function colorFor(name: string) {
+function hueFor(name: string) {
   let h = 0
   for (const ch of name) h = (h * 31 + ch.codePointAt(0)!) >>> 0
-  return COLORS[h % COLORS.length]
+  return HUES[h % HUES.length]
 }
 
 interface Props {
@@ -17,16 +20,21 @@ interface Props {
 }
 
 export default function Avatar({ url, name, size = 44, online, group }: Props) {
+  const { t } = useT()
   const src = useAuthedImage(url)
-  const initial = group ? '👥' : (Array.from(name.trim())[0] ?? '?').toUpperCase()
+  const initial = (Array.from(name.trim())[0] ?? '?').toUpperCase()
   return (
-    <span className="avatar" style={{ width: size, height: size, fontSize: size * 0.42 }}>
+    <span className="avatar" style={{ width: size, height: size, fontSize: size * 0.4 }}>
       {src ? (
         <img src={src} alt="" />
       ) : (
-        <span className="avatar-fallback" style={{ background: colorFor(name) }}>{initial}</span>
+        <span className="avatar-fallback" style={{ ['--hue' as string]: hueFor(name) }}>
+          {group ? <UsersIcon /> : initial}
+        </span>
       )}
-      {online !== undefined && <span className={`dot ${online ? 'online' : 'offline'}`} title={online ? 'ออนไลน์' : 'ออฟไลน์'} />}
+      {online !== undefined && (
+        <span className={`dot ${online ? 'online' : 'offline'}`} title={online ? t('common.online') : t('common.offline')} />
+      )}
     </span>
   )
 }

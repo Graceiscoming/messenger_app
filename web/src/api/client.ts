@@ -1,3 +1,4 @@
+import { translate } from '../i18n'
 import type { AuthResultDto, ProblemDetails } from '../types/api'
 
 const BASE = '/api/v1'
@@ -20,14 +21,14 @@ export function errorMessage(e: unknown): string {
     const fieldErrors = e.problem?.errors ? Object.values(e.problem.errors).flat() : []
     if (fieldErrors.length > 0 && !e.problem?.detail) return fieldErrors.join(' / ')
     if (e.problem?.detail || e.problem?.title) return e.message
-    if (e.status === 413) return 'ไฟล์มีขนาดใหญ่เกินไป'
-    if (e.status === 403) return 'คุณไม่มีสิทธิ์ทำรายการนี้'
-    if (e.status === 404) return 'ไม่พบข้อมูล'
-    if (e.status === 409) return 'ไม่สามารถทำรายการได้ในสถานะปัจจุบัน'
-    return 'เกิดข้อผิดพลาด กรุณาลองใหม่'
+    if (e.status === 413) return translate('err.fileTooLarge')
+    if (e.status === 403) return translate('err.forbidden')
+    if (e.status === 404) return translate('err.notFound')
+    if (e.status === 409) return translate('err.conflict')
+    return translate('err.generic')
   }
-  if (e instanceof TypeError) return 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้'
-  return 'เกิดข้อผิดพลาด กรุณาลองใหม่'
+  if (e instanceof TypeError) return translate('err.network')
+  return translate('err.generic')
 }
 
 // ---- token state (access token in memory only) ----

@@ -4,12 +4,16 @@ import { useQueryClient } from '@tanstack/react-query'
 import { errorMessage } from '../api/client'
 import { conversationsApi, friendsApi, usersApi } from '../api/endpoints'
 import { keys, setFriends, setRequests, upsertConversation, useFriends, useRequests } from '../hooks/queries'
-import { useMe } from '../store/auth'
+import { useT } from '../i18n'
+import { useMe } from '../store/authContext'
 import { useBlocked } from '../store/blocked'
 import type { FriendDto, UserDto } from '../types/api'
 import Avatar from './Avatar'
+import { MoreIcon, SearchIcon, UsersIcon } from './icons'
+import { EmptyState, ListSkeleton } from './Skeletons'
 
 export default function FriendsPanel() {
+  const { t } = useT()
   const me = useMe()
   const qc = useQueryClient()
   const navigate = useNavigate()
@@ -58,7 +62,7 @@ export default function FriendsPanel() {
 
   const remove = async (f: FriendDto) => {
     setMenuFor(null)
-    if (!window.confirm(`ลบ ${f.user.displayName} ออกจากเพื่อน?`)) return
+    if (!window.confirm(t('friends.confirmRemove', { name: f.user.displayName }))) return
     try {
       await friendsApi.remove(f.user.id)
       setFriends(qc, (l) => l.filter((x) => x.user.id !== f.user.id))
@@ -67,7 +71,7 @@ export default function FriendsPanel() {
 
   const block = async (f: FriendDto) => {
     setMenuFor(null)
-    if (!window.confirm(`บล็อก ${f.user.displayName}? จะถูกลบออกจากเพื่อนด้วย`)) return
+    if (!window.confirm(t('friends.confirmBlock', { name: f.user.displayName }))) return
     try {
       await usersApi.block(f.user.id)
       blocked.add(f.user)
@@ -89,23 +93,29 @@ export default function FriendsPanel() {
     !results && f.user.displayName.toLowerCase().includes(q.trim().toLowerCase()))
 
   return (
-    <div className="panel">
+    <div className="panel" onClick={() => setMenuFor(null)}>
       <form className="panel-tools" onSubmit={search}>
-        <input
-          className="search"
-          placeholder="ค้นหา username เพื่อเพิ่มเพื่อน"
-          value={q}
-          onChange={(e) => { setQ(e.target.value); if (!e.target.value) setResults(null) }}
-        />
-        <button className="btn small" disabled={searching || !q.trim()}>ค้นหา</button>
+        <label className="search-box">
+          <SearchIcon />
+          <input
+            placeholder={t('friends.searchPlaceholder')}
+            aria-label={t('friends.searchPlaceholder')}
+            value={q}
+            onChange={(e) => { setQ(e.target.value); if (!e.target.value) setResults(null) }}
+          />
+        </label>
+        <button className="btn small" disabled={searching || !q.trim()}>{t('friends.search')}</button>
       </form>
       {error && <p className="error pad" role="alert">{error}</p>}
 
       {results && (
         <section>
-          <h3 className="section-title">ผลการค้นหา <button className="link" onClick={() => { setResults(null); setQ('') }}>ล้าง</button></h3>
+          <h3 className="section-title">
+            {t('friends.results')}
+            <button className="link" onClick={() => { setResults(null); setQ('') }}>{t('common.clear')}</button>
+          </h3>
           <ul className="list">
-            {results.length === 0 && <li className="empty">ไม่พบผู้ใช้</li>}
+            {results.length === 0 && <li className="empty">{t('friends.noUser')}</li>}
             {results.map((u) => (
               <li key={u.id} className="list-item static">
                 <Avatar url={u.avatarUrl} name={u.displayName} />
@@ -113,19 +123,23 @@ export default function FriendsPanel() {
                   <span className="list-title">{u.displayName}</span>
                   <span className="list-sub">@{u.username}</span>
                 </div>
-                {isFriend(u.id) ? <span className="muted">เพื่อนแล้ว</span>
-                  : pendingWith(u.id) ? <span className="muted">รอการตอบรับ</span>
-                  : <button className="btn small primary" onClick={() => add(u)}>เพิ่มเพื่อน</button>}
+                {isFriend(u.id) ? <span className="muted">{t('friends.isFriend')}</span>
+                  : pendingWith(u.id) ? <span className="muted">{t('friends.pending')}</span>
+                  : <button className="btn small primary" onClick={() => add(u)}>{t('friends.add')}</button>}
               </li>
             ))}
           </ul>
         </section>
       )}
 
-      <h3 className="section-title">เพื่อน {friends ? `(${friends.length})` : ''}</h3>
+      <h3 className="section-title">{t('friends.heading', { n: friends?.length ?? 0 })}</h3>
+      {isLoading && <ListSkeleton rows={5} />}
+      {!isLoading && filtered.length === 0 && (
+        friends?.length
+          ? <EmptyState icon={<SearchIcon />} title={t('friends.noMatch')} />
+          : <EmptyState icon={<UsersIcon />} title={t('friends.empty')} hint={t('friends.emptyHint')} />
+      )}
       <ul className="list">
-        {isLoading && <li className="empty">กำลังโหลด...</li>}
-        {!isLoading && filtered.length === 0 && <li className="empty">{friends?.length ? 'ไม่พบเพื่อน' : 'ยังไม่มีเพื่อน'}</li>}
         {filtered.map((f) => (
           <li key={f.user.id} className="list-item static clickable" onClick={() => open(f)}>
             <Avatar url={f.user.avatarUrl} name={f.user.displayName} online={f.isOnline} />
@@ -134,11 +148,11 @@ export default function FriendsPanel() {
               <span className="list-sub">{f.user.statusMessage || `@${f.user.username}`}</span>
             </div>
             <div className="menu-wrap" onClick={(e) => e.stopPropagation()}>
-              <button className="icon-btn" aria-label="เมนู" onClick={() => setMenuFor(menuFor === f.user.id ? null : f.user.id)}>⋯</button>
+              <button className="icon-btn" aria-label={t('friends.menu')} onClick={() => setMenuFor(menuFor === f.user.id ? null : f.user.id)}><MoreIcon /></button>
               {menuFor === f.user.id && (
                 <div className="menu">
-                  <button onClick={() => remove(f)}>ลบเพื่อน</button>
-                  <button className="danger" onClick={() => block(f)}>บล็อก</button>
+                  <button onClick={() => remove(f)}>{t('friends.remove')}</button>
+                  <button className="danger" onClick={() => block(f)}>{t('friends.block')}</button>
                 </div>
               )}
             </div>
@@ -149,8 +163,8 @@ export default function FriendsPanel() {
       {blocked.list.length > 0 && (
         <section>
           <h3 className="section-title">
-            <button className="link" onClick={() => setShowBlocked(!showBlocked)}>
-              ผู้ใช้ที่บล็อก ({blocked.list.length}) {showBlocked ? '▲' : '▼'}
+            <button className="link" onClick={() => setShowBlocked(!showBlocked)} aria-expanded={showBlocked}>
+              {t('friends.blocked', { n: blocked.list.length })} {showBlocked ? '▲' : '▼'}
             </button>
           </h3>
           {showBlocked && (
@@ -159,7 +173,7 @@ export default function FriendsPanel() {
                 <li key={u.id} className="list-item static">
                   <Avatar url={u.avatarUrl} name={u.displayName} />
                   <div className="list-main"><span className="list-title">{u.displayName}</span></div>
-                  <button className="btn small" onClick={() => unblock(u)}>เลิกบล็อก</button>
+                  <button className="btn small" onClick={() => unblock(u)}>{t('friends.unblock')}</button>
                 </li>
               ))}
             </ul>

@@ -4,10 +4,13 @@ import { useQueryClient } from '@tanstack/react-query'
 import { errorMessage } from '../api/client'
 import { conversationsApi } from '../api/endpoints'
 import { upsertConversation, useFriends } from '../hooks/queries'
+import { useT } from '../i18n'
 import Avatar from './Avatar'
 import Modal from './Modal'
+import { ListSkeleton } from './Skeletons'
 
 export default function CreateGroupDialog({ onClose }: { onClose: () => void }) {
+  const { t } = useT()
   const qc = useQueryClient()
   const navigate = useNavigate()
   const { data: friends, isLoading } = useFriends()
@@ -37,20 +40,20 @@ export default function CreateGroupDialog({ onClose }: { onClose: () => void }) 
 
   return (
     <Modal
-      title="สร้างกลุ่มใหม่"
+      title={t('group.create.title')}
       onClose={onClose}
       footer={<>
-        <button className="btn" onClick={onClose}>ยกเลิก</button>
-        <button className="btn primary" disabled={!valid || busy} onClick={create}>สร้างกลุ่ม ({selected.size})</button>
+        <button className="btn" onClick={onClose}>{t('common.cancel')}</button>
+        <button className="btn primary" disabled={!valid || busy} onClick={create}>{t('group.createBtn', { n: selected.size })}</button>
       </>}
     >
-      <label className="field">ชื่อกลุ่ม
+      <label className="field">{t('group.name')}
         <input value={name} maxLength={50} onChange={(e) => setName(e.target.value)} autoFocus />
       </label>
-      <h3 className="section-title flush">เลือกเพื่อน</h3>
+      <h3 className="section-title flush">{t('group.pickFriends')}</h3>
+      {isLoading && <ListSkeleton rows={3} />}
+      {!isLoading && !friends?.length && <p className="empty">{t('group.noFriends')}</p>}
       <ul className="list scroll">
-        {isLoading && <li className="empty">กำลังโหลด...</li>}
-        {!isLoading && !friends?.length && <li className="empty">ยังไม่มีเพื่อนให้เลือก</li>}
         {friends?.map((f) => (
           <li key={f.user.id}>
             <label className="list-item static check">

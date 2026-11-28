@@ -3,13 +3,15 @@ import { errorMessage } from '../api/client'
 import { usersApi } from '../api/endpoints'
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '../constants'
 import { invalidateAuthedImage } from '../hooks/useAuthedImage'
-import { useAuth, useMe } from '../store/auth'
+import { useT } from '../i18n'
+import { useAuth, useMe } from '../store/authContext'
 import Avatar from './Avatar'
 import Modal from './Modal'
 
 export default function ProfileDialog({ onClose }: { onClose: () => void }) {
+  const { t } = useT()
   const me = useMe()
-  const { setUser, logout } = useAuth()
+  const { setUser } = useAuth()
   const [displayName, setDisplayName] = useState(me.displayName)
   const [statusMessage, setStatusMessage] = useState(me.statusMessage ?? '')
   const [error, setError] = useState<string | null>(null)
@@ -18,8 +20,8 @@ export default function ProfileDialog({ onClose }: { onClose: () => void }) {
 
   const pickAvatar = async (file: File | undefined) => {
     if (!file) return
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return setError('รองรับเฉพาะไฟล์ jpeg, png, webp, gif')
-    if (file.size > MAX_IMAGE_BYTES) return setError('ไฟล์ต้องมีขนาดไม่เกิน 5 MB')
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return setError(t('err.imageType'))
+    if (file.size > MAX_IMAGE_BYTES) return setError(t('err.imageSize'))
     setError(null)
     setBusy(true)
     try {
@@ -50,26 +52,24 @@ export default function ProfileDialog({ onClose }: { onClose: () => void }) {
 
   return (
     <Modal
-      title="โปรไฟล์ของฉัน"
+      title={t('profile.title')}
       onClose={onClose}
       footer={<>
-        <button className="btn danger-outline" onClick={() => void logout()}>ออกจากระบบ</button>
-        <span className="spacer" />
-        <button className="btn" onClick={onClose}>ยกเลิก</button>
-        <button className="btn primary" disabled={busy || !displayName.trim()} onClick={save}>บันทึก</button>
+        <button className="btn" onClick={onClose}>{t('common.cancel')}</button>
+        <button className="btn primary" disabled={busy || !displayName.trim()} onClick={save}>{t('common.save')}</button>
       </>}
     >
       <div className="profile-avatar">
         <Avatar url={me.avatarUrl} name={me.displayName} size={88} />
-        <button className="btn small" disabled={busy} onClick={() => fileRef.current?.click()}>เปลี่ยนรูปโปรไฟล์</button>
+        <button className="btn small" disabled={busy} onClick={() => fileRef.current?.click()}>{t('profile.changeAvatar')}</button>
         <input ref={fileRef} type="file" hidden accept={ALLOWED_IMAGE_TYPES.join(',')} onChange={(e) => void pickAvatar(e.target.files?.[0])} />
       </div>
       <p className="muted center">@{me.username}</p>
-      <label className="field">ชื่อที่แสดง
+      <label className="field">{t('profile.displayName')}
         <input value={displayName} maxLength={50} onChange={(e) => setDisplayName(e.target.value)} />
       </label>
-      <label className="field">สถานะ
-        <input value={statusMessage} maxLength={100} onChange={(e) => setStatusMessage(e.target.value)} placeholder="เช่น ว่างอยู่" />
+      <label className="field">{t('profile.status')}
+        <input value={statusMessage} maxLength={100} onChange={(e) => setStatusMessage(e.target.value)} placeholder={t('profile.statusPlaceholder')} />
       </label>
       {error && <p className="error" role="alert">{error}</p>}
     </Modal>

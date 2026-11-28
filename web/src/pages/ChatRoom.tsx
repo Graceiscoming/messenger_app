@@ -6,13 +6,18 @@ import { conversationsApi, messagesApi } from '../api/endpoints'
 import Avatar from '../components/Avatar'
 import Composer from '../components/Composer'
 import GroupInfoDialog from '../components/GroupInfoDialog'
+import { BackIcon, ChatIcon, InfoIcon } from '../components/icons'
 import MessageBubble from '../components/MessageBubble'
-import { keys, patchConversation, patchMessage, useConversation, useFriends, useMessages } from '../hooks/queries'
+import { EmptyState, MessagesSkeleton } from '../components/Skeletons'
+import { patchConversation, patchMessage, useConversation, useFriends, useMessages } from '../hooks/queries'
+import { useT } from '../i18n'
 import { activeConversation } from '../store/activeConversation'
-import { useMe } from '../store/auth'
+import { useMe } from '../store/authContext'
 import { useTypingUsers } from '../store/typing'
 import type { MessageDto } from '../types/api'
-import { convAvatar, convTitle, formatDay, otherMember, sameDay } from '../utils/format'
+import { convAvatar, convTitle, formatDay, otherMember, parseDate, sameDay } from '../utils/format'
+
+const GROUP_GAP_MS = 5 * 60_000
 
 export default function ChatRoom() {
   const { id = '' } = useParams()
@@ -20,6 +25,7 @@ export default function ChatRoom() {
 }
 
 function ChatRoomInner({ id }: { id: string }) {
+  const { t } = useT()
   const me = useMe()
   const qc = useQueryClient()
   const navigate = useNavigate()
@@ -35,6 +41,8 @@ function ChatRoomInner({ id }: { id: string }) {
   const [error, setError] = useState<string | null>(null)
   const [showInfo, setShowInfo] = useState(false)
   const [lightbox, setLightbox] = useState<string | null>(null)
+  // Messages with an id above this arrived after the room finished loading -> animate them in.
+  const [baseline, setBaseline] = useState<number | null>(null)
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const stick = useRef(true)
@@ -44,6 +52,7 @@ function ChatRoomInner({ id }: { id: string }) {
   // newest -> oldest pages flattened, then reversed for display
   const messages = useMemo(() => (msgs.data?.pages.flat() ?? []).slice().reverse(), [msgs.data])
   const newest = messages[messages.length - 1]
+  if (baseline === null && msgs.isSuccess) setBaseline(newest?.id ?? 0)
 
   useEffect(() => {
     activeConversation.set(id)
@@ -98,7 +107,7 @@ function ChatRoomInner({ id }: { id: string }) {
 
   const unsend = async (m: MessageDto) => {
     setMenuFor(null)
-    if (!window.confirm('ยกเลิกการส่งข้อความนี้?')) return
+    if (!window.confirm(t('msg.confirmUnsend'))) return
     setError(null)
     try {
       await messagesApi.unsend(m.id)
@@ -111,7 +120,11 @@ function ChatRoomInner({ id }: { id: string }) {
   }
 
   if (conv.isError) {
-    return <div className="chat-empty"><p>ไม่พบห้องแชทนี้</p><button className="btn" onClick={() => navigate('/')}>กลับ</button></div>
+    return (
+      <div className="chat-empty">
+        <EmptyState icon={<ChatIcon />} title={t('chat.notFound')} action={<button className="btn" onClick={() => navigate('/')}>{t('common.back')}</button>} />
+      </div>
+    )
   }
   const c = conv.data
   const other = c?.type === 'Direct' ? otherMember(c, me.id) : null
@@ -128,74 +141,87 @@ function ChatRoomInner({ id }: { id: string }) {
     const others = c.members.filter((x) => x.user.id !== me.id)
     const n = others.filter((x) => (x.lastReadMessageId ?? 0) >= m.id).length
     if (n === 0) return null
-    return c.type === 'Direct' ? 'อ่านแล้ว' : `อ่านแล้ว ${n}`
+    return c.type === 'Direct' ? t('msg.read') : t('msg.readN', { n })
   }
+
+  const grouped = (a: MessageDto | undefined, b: MessageDto) =>
+    !!a && a.type !== 'System' && b.type !== 'System' && a.sender.id === b.sender.id && sameDay(a.createdAt, b.createdAt)
+    && parseDate(b.createdAt).getTime() - parseDate(a.createdAt).getTime() < GROUP_GAP_MS
 
   return (
     <div className="chat">
       <header className="chat-header">
-        <button className="icon-btn back" onClick={() => navigate('/')} aria-label="กลับ">←</button>
+        <button className="icon-btn back" onClick={() => navigate('/')} aria-label={t('common.back')}><BackIcon /></button>
         {c && <Avatar url={convAvatar(c, me.id)} name={title} group={c.type === 'Group' && !c.avatarUrl} online={friend?.isOnline} />}
         <div className="chat-title">
           <strong>{title}</strong>
-          <small>
-            {typingNames.length > 0 ? 'กำลังพิมพ์...'
-              : c?.type === 'Group' ? `สมาชิก ${c.members.length} คน`
-              : friend ? (friend.isOnline ? 'ออนไลน์' : 'ออฟไลน์') : ''}
+          <small className={typingNames.length > 0 || friend?.isOnline ? 'accent' : ''}>
+            {typingNames.length > 0 ? t('chat.typing')
+              : c?.type === 'Group' ? t('chat.members', { n: c.members.length })
+              : friend ? (friend.isOnline ? t('common.online') : t('common.offline')) : ''}
           </small>
         </div>
-        {c?.type === 'Group' && <button className="icon-btn" onClick={() => setShowInfo(true)} aria-label="ข้อมูลกลุ่ม" title="ข้อมูลกลุ่ม">ⓘ</button>}
+        {c?.type === 'Group' && (
+          <button className="icon-btn" onClick={() => setShowInfo(true)} aria-label={t('chat.groupInfo')} title={t('chat.groupInfo')}><InfoIcon /></button>
+        )}
       </header>
 
       <div className="messages" ref={scrollRef} onScroll={onScroll} onClick={() => setMenuFor(null)}>
-        {msgs.isFetchingNextPage && <div className="loading-older">กำลังโหลดข้อความเก่า...</div>}
-        {msgs.isLoading && <div className="empty">กำลังโหลด...</div>}
-        {msgs.isError && <div className="empty error">โหลดข้อความไม่สำเร็จ <button className="link" onClick={() => void msgs.refetch()}>ลองใหม่</button></div>}
-        {!msgs.isLoading && messages.length === 0 && <div className="empty">ยังไม่มีข้อความ ทักทายกันเลย!</div>}
-        {messages.map((m, i) => (
-          <div key={m.id}>
-            {(i === 0 || !sameDay(messages[i - 1].createdAt, m.createdAt)) && (
-              <div className="day-sep"><span>{formatDay(m.createdAt)}</span></div>
-            )}
-            <MessageBubble
-              msg={m}
-              mine={m.sender.id === me.id}
-              isGroup={c?.type === 'Group'}
-              readLabel={readLabel(m)}
-              menuOpen={menuFor === m.id}
-              onToggleMenu={() => setMenuFor(menuFor === m.id ? null : m.id)}
-              onReply={() => { setReply(m); setMenuFor(null) }}
-              onUnsend={() => void unsend(m)}
-              onImageClick={setLightbox}
-              onMediaLoad={() => { if (stick.current) scrollBottom() }}
-            />
+        {msgs.isFetchingNextPage && <div className="loading-older">{t('chat.loadingOlder')}</div>}
+        {msgs.isLoading && <MessagesSkeleton />}
+        {msgs.isError && <div className="empty error">{t('chat.loadError')} <button className="link" onClick={() => void msgs.refetch()}>{t('common.retry')}</button></div>}
+        {msgs.isSuccess && messages.length === 0 && (
+          <EmptyState icon={<ChatIcon />} title={t('chat.empty')} hint={t('chat.emptyHint')} />
+        )}
+        {messages.map((m, i) => {
+          const prev = messages[i - 1]
+          const next = messages[i + 1]
+          return (
+            <div key={m.id}>
+              {(i === 0 || !sameDay(prev.createdAt, m.createdAt)) && (
+                <div className="day-sep"><span>{formatDay(m.createdAt)}</span></div>
+              )}
+              <MessageBubble
+                msg={m}
+                mine={m.sender.id === me.id}
+                isGroup={c?.type === 'Group'}
+                groupedPrev={grouped(prev, m)}
+                groupedNext={!!next && grouped(m, next)}
+                animate={baseline !== null && m.id > baseline}
+                readLabel={readLabel(m)}
+                menuOpen={menuFor === m.id}
+                onToggleMenu={() => setMenuFor(menuFor === m.id ? null : m.id)}
+                onReply={() => { setReply(m); setMenuFor(null) }}
+                onUnsend={() => void unsend(m)}
+                onImageClick={setLightbox}
+                onMediaLoad={() => { if (stick.current) scrollBottom() }}
+              />
+            </div>
+          )
+        })}
+        {typingNames.length > 0 && (
+          <div className="typing" aria-live="polite">
+            <span className="typing-dots"><i /><i /><i /></span>
+            <span>{t('chat.typingNames', { names: typingNames.join(', ') })}</span>
           </div>
-        ))}
-        {typingNames.length > 0 && <div className="typing"><span className="typing-dots"><i /><i /><i /></span> {typingNames.join(', ')} กำลังพิมพ์</div>}
+        )}
       </div>
 
       {error && <p className="error pad" role="alert">{error}</p>}
-      {readOnly && (
-        <div className="readonly-note">
-          {forbidden ?? 'ไม่สามารถส่งข้อความได้ เนื่องจากคุณไม่ได้เป็นเพื่อนกันแล้ว'}
-        </div>
-      )}
+      {readOnly && <div className="readonly-note">{forbidden ?? t('chat.readonly')}</div>}
       <Composer
         conversationId={id}
         disabled={readOnly || !c}
         reply={reply}
         onClearReply={() => setReply(null)}
-        onForbidden={(msg) => {
-          setForbidden(msg)
-          if (c?.type === 'Group') void qc.invalidateQueries({ queryKey: keys.conversations })
-        }}
+        onForbidden={setForbidden}
         onSent={() => { stick.current = true }}
       />
 
       {showInfo && <GroupInfoDialog conversationId={id} onClose={() => setShowInfo(false)} />}
       {lightbox && (
         <div className="lightbox" onClick={() => setLightbox(null)}>
-          <img src={lightbox} alt="รูปภาพ" />
+          <img src={lightbox} alt={t('msg.imageAlt')} />
         </div>
       )}
     </div>

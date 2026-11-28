@@ -8,6 +8,7 @@ import {
 } from '../hooks/queries'
 import { activeConversation } from '../store/activeConversation'
 import { clearTyping, setTyping } from '../store/typing'
+import { notifyIncoming } from '../utils/notify'
 import type {
   ConversationDto, FriendRemovedEvent, FriendshipDto, MessageDto, MessageReadEvent, MessageUnsentEvent,
   PresenceChangedEvent, UserTypingEvent,
@@ -30,6 +31,7 @@ export function useRealtime(meId: string) {
       clearTyping(msg.conversationId, msg.sender.id)
       addMessageToCache(qc, msg)
       const seen = activeConversation.id === msg.conversationId && document.visibilityState === 'visible'
+      if (msg.sender.id !== meId && msg.type !== 'System' && !seen) notifyIncoming(msg, meId)
       const known = qc.getQueryData<ConversationDto[]>(keys.conversations)?.some((c) => c.id === msg.conversationId)
       if (known === false) {
         void qc.invalidateQueries({ queryKey: keys.conversations }) // unknown room: fetch just the list once

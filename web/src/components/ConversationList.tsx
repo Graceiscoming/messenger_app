@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useConversations, useFriends } from '../hooks/queries'
-import { useMe } from '../store/auth'
+import { useT } from '../i18n'
+import { useMe } from '../store/authContext'
 import { convAvatar, convTitle, formatListTime, messagePreview, otherMember } from '../utils/format'
 import Avatar from './Avatar'
+import { ChatIcon, SearchIcon } from './icons'
+import { EmptyState, ListSkeleton } from './Skeletons'
 
-export default function ConversationList({ onCreateGroup }: { onCreateGroup: () => void }) {
+export default function ConversationList() {
+  const { t } = useT()
   const me = useMe()
   const { data, isLoading, isError } = useConversations()
   const { data: friends } = useFriends()
@@ -16,13 +20,19 @@ export default function ConversationList({ onCreateGroup }: { onCreateGroup: () 
   return (
     <div className="panel">
       <div className="panel-tools">
-        <input className="search" placeholder="ค้นหาแชท" value={q} onChange={(e) => setQ(e.target.value)} />
-        <button className="btn small" onClick={onCreateGroup} title="สร้างกลุ่มใหม่">+ กลุ่ม</button>
+        <label className="search-box">
+          <SearchIcon />
+          <input placeholder={t('chats.search')} aria-label={t('chats.search')} value={q} onChange={(e) => setQ(e.target.value)} />
+        </label>
       </div>
+      {isLoading && <ListSkeleton />}
+      {isError && <p className="empty error">{t('chats.loadError')}</p>}
+      {!isLoading && !isError && list.length === 0 && (
+        q
+          ? <EmptyState icon={<SearchIcon />} title={t('chats.noMatch')} />
+          : <EmptyState icon={<ChatIcon />} title={t('chats.empty')} hint={t('chats.emptyHint')} />
+      )}
       <ul className="list">
-        {isLoading && <li className="empty">กำลังโหลด...</li>}
-        {isError && <li className="empty error">โหลดรายการแชทไม่สำเร็จ</li>}
-        {!isLoading && list.length === 0 && <li className="empty">{q ? 'ไม่พบแชท' : 'ยังไม่มีแชท เริ่มจากเพิ่มเพื่อนได้เลย'}</li>}
         {list.map((c) => {
           const other = c.type === 'Direct' ? otherMember(c, me.id) : null
           const online = other ? friends?.find((f) => f.user.id === other.id)?.isOnline : undefined
@@ -36,7 +46,7 @@ export default function ConversationList({ onCreateGroup }: { onCreateGroup: () 
                     {c.lastMessage && <span className="list-time">{formatListTime(c.lastMessage.createdAt)}</span>}
                   </div>
                   <div className="list-bottom">
-                    <span className="list-sub">{messagePreview(c.lastMessage, me.id)}</span>
+                    <span className={`list-sub${c.unreadCount > 0 ? ' strong' : ''}`}>{messagePreview(c.lastMessage, me.id)}</span>
                     {c.unreadCount > 0 && <span className="badge">{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>}
                   </div>
                 </div>

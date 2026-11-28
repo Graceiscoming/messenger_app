@@ -1,26 +1,15 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import type { AuthResultDto, UserDto } from '../types/api'
+import { AuthContext, type AuthContextValue, type AuthStatus } from './authContext'
 import { refreshSession, setAuthLostHandler, tokens } from '../api/client'
 import { authApi } from '../api/endpoints'
 import { clearAuthedImages } from '../hooks/useAuthedImage'
 
-type Status = 'loading' | 'authed' | 'anon'
-
-interface AuthContextValue {
-  status: Status
-  user: UserDto | null
-  login: (username: string, password: string) => Promise<void>
-  register: (username: string, displayName: string, password: string) => Promise<void>
-  logout: () => Promise<void>
-  setUser: (u: UserDto) => void
-}
-
-const AuthContext = createContext<AuthContextValue | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const qc = useQueryClient()
-  const [status, setStatus] = useState<Status>(() => (tokens.refresh ? 'loading' : 'anon'))
+  const [status, setStatus] = useState<AuthStatus>(() => (tokens.refresh ? 'loading' : 'anon'))
   const [user, setUser] = useState<UserDto | null>(null)
 
   const applyResult = useCallback((r: AuthResultDto) => {
@@ -70,14 +59,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
-export function useAuth(): AuthContextValue {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth outside AuthProvider')
-  return ctx
-}
-
-export function useMe(): UserDto {
-  const { user } = useAuth()
-  if (!user) throw new Error('not authenticated')
-  return user
-}

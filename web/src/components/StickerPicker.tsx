@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { useStickers } from '../hooks/queries'
+import { useT } from '../i18n'
 import type { StickerDto } from '../types/api'
 
 export default function StickerPicker({ onPick }: { onPick: (s: StickerDto) => void }) {
+  const { t } = useT()
   const { data: packs, isLoading, isError } = useStickers()
   const [packId, setPackId] = useState<number | null>(null)
   const pack = packs?.find((p) => p.id === packId) ?? packs?.[0]
 
   return (
     <div className="sticker-picker">
-      {isLoading && <p className="empty">กำลังโหลด...</p>}
-      {isError && <p className="empty error">โหลดสติกเกอร์ไม่สำเร็จ</p>}
+      {isLoading && <div className="sticker-grid" aria-hidden="true">{Array.from({ length: 8 }, (_, i) => <span key={i} className="skeleton sk-sticker" />)}</div>}
+      {isError && <p className="empty error">{t('stickers.loadError')}</p>}
       {pack && (
         <>
           <div className="sticker-grid">

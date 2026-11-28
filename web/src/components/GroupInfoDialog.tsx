@@ -6,14 +6,17 @@ import { conversationsApi } from '../api/endpoints'
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '../constants'
 import { keys, upsertConversation, useConversation, useFriends } from '../hooks/queries'
 import { invalidateAuthedImage } from '../hooks/useAuthedImage'
-import { useMe } from '../store/auth'
+import { useT, type TKey } from '../i18n'
+import { useMe } from '../store/authContext'
 import type { ConversationDto, MemberRole } from '../types/api'
 import Avatar from './Avatar'
 import Modal from './Modal'
+import { ListSkeleton } from './Skeletons'
 
-const ROLE_LABEL: Record<MemberRole, string> = { Owner: 'เจ้าของ', Admin: 'แอดมิน', Member: 'สมาชิก' }
+const ROLE_KEY: Record<MemberRole, TKey> = { Owner: 'group.role.owner', Admin: 'group.role.admin', Member: 'group.role.member' }
 
 export default function GroupInfoDialog({ conversationId, onClose }: { conversationId: string; onClose: () => void }) {
+  const { t } = useT()
   const me = useMe()
   const qc = useQueryClient()
   const navigate = useNavigate()
@@ -26,7 +29,7 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
   const [busy, setBusy] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
-  if (!conv) return <Modal title="ข้อมูลกลุ่ม" onClose={onClose}><p className="empty">กำลังโหลด...</p></Modal>
+  if (!conv) return <Modal title={t('group.info.title')} onClose={onClose}><ListSkeleton rows={4} /></Modal>
 
   const myRole = conv.members.find((m) => m.user.id === me.id)?.role ?? 'Member'
   const isOwner = myRole === 'Owner'
@@ -58,8 +61,8 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
 
   const changeAvatar = (file: File | undefined) => {
     if (!file) return
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return setError('รองรับเฉพาะไฟล์ jpeg, png, webp, gif')
-    if (file.size > MAX_IMAGE_BYTES) return setError('ไฟล์ต้องมีขนาดไม่เกิน 5 MB')
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return setError(t('err.imageType'))
+    if (file.size > MAX_IMAGE_BYTES) return setError(t('err.imageSize'))
     void act(async () => {
       const old = conv.avatarUrl
       apply(await conversationsApi.uploadGroupAvatar(conversationId, file))
@@ -74,7 +77,7 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
   })
 
   const leave = async () => {
-    if (!window.confirm('ออกจากกลุ่มนี้?')) return
+    if (!window.confirm(t('group.confirmLeave'))) return
     setBusy(true)
     try {
       await conversationsApi.leave(conversationId)
@@ -88,12 +91,12 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
   }
 
   return (
-    <Modal title="ข้อมูลกลุ่ม" onClose={onClose} footer={<button className="btn danger-outline" disabled={busy} onClick={leave}>ออกจากกลุ่ม</button>}>
+    <Modal title={t('group.info.title')} onClose={onClose} footer={<button className="btn danger-outline" disabled={busy} onClick={leave}>{t('group.leave')}</button>}>
       <div className="profile-avatar">
-        <Avatar url={conv.avatarUrl} name={conv.name ?? 'กลุ่ม'} size={72} group={!conv.avatarUrl} />
+        <Avatar url={conv.avatarUrl} name={conv.name ?? t('group.default')} size={72} group={!conv.avatarUrl} />
         {canManage && (
           <>
-            <button className="btn small" disabled={busy} onClick={() => fileRef.current?.click()}>เปลี่ยนรูปกลุ่ม</button>
+            <button className="btn small" disabled={busy} onClick={() => fileRef.current?.click()}>{t('group.changeAvatar')}</button>
             <input ref={fileRef} type="file" hidden accept={ALLOWED_IMAGE_TYPES.join(',')}
               onChange={(e) => { changeAvatar(e.target.files?.[0]); e.target.value = '' }} />
           </>
@@ -102,14 +105,14 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
 
       {canManage ? (
         <div className="inline-form">
-          <input value={name ?? conv.name ?? ''} maxLength={50} onChange={(e) => setName(e.target.value)} aria-label="ชื่อกลุ่ม" />
-          <button className="btn small primary" disabled={busy || name === null || !name.trim() || name === conv.name} onClick={rename}>บันทึกชื่อ</button>
+          <input value={name ?? conv.name ?? ''} maxLength={50} onChange={(e) => setName(e.target.value)} aria-label={t('group.name')} />
+          <button className="btn small primary" disabled={busy || name === null || !name.trim() || name === conv.name} onClick={rename}>{t('group.saveName')}</button>
         </div>
       ) : (
         <h3 className="center">{conv.name}</h3>
       )}
 
-      <h3 className="section-title flush">สมาชิก ({conv.members.length})</h3>
+      <h3 className="section-title flush">{t('group.members', { n: conv.members.length })}</h3>
       <ul className="list scroll">
         {conv.members.map((m) => {
           const self = m.user.id === me.id
@@ -118,20 +121,20 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
             <li key={m.user.id} className="list-item static">
               <Avatar url={m.user.avatarUrl} name={m.user.displayName} size={36} />
               <div className="list-main">
-                <span className="list-title">{m.user.displayName}{self ? ' (คุณ)' : ''}</span>
-                <span className="list-sub">{ROLE_LABEL[m.role]}</span>
+                <span className="list-title">{m.user.displayName}{self ? ` (${t('common.you')})` : ''}</span>
+                <span className="list-sub">{t(ROLE_KEY[m.role])}</span>
               </div>
               <div className="row-actions">
                 {isOwner && !self && m.role !== 'Owner' && (
                   <button className="btn small" disabled={busy}
                     onClick={() => act(() => conversationsApi.setRole(conversationId, m.user.id, m.role === 'Admin' ? 'Member' : 'Admin'))}>
-                    {m.role === 'Admin' ? 'ลดเป็นสมาชิก' : 'ตั้งเป็นแอดมิน'}
+                    {m.role === 'Admin' ? t('group.makeMember') : t('group.makeAdmin')}
                   </button>
                 )}
                 {canRemove && (
                   <button className="btn small danger-outline" disabled={busy}
-                    onClick={() => window.confirm(`ลบ ${m.user.displayName} ออกจากกลุ่ม?`) && void act(() => conversationsApi.removeMember(conversationId, m.user.id))}>
-                    ลบ
+                    onClick={() => window.confirm(t('group.confirmRemove', { name: m.user.displayName })) && void act(() => conversationsApi.removeMember(conversationId, m.user.id))}>
+                    {t('group.removeMember')}
                   </button>
                 )}
               </div>
@@ -143,9 +146,9 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
       {canManage && (
         adding ? (
           <>
-            <h3 className="section-title flush">เพิ่มสมาชิก</h3>
+            <h3 className="section-title flush">{t('group.addTitle')}</h3>
             <ul className="list scroll">
-              {candidates.length === 0 && <li className="empty">ไม่มีเพื่อนที่เพิ่มได้</li>}
+              {candidates.length === 0 && <li className="empty">{t('group.noCandidates')}</li>}
               {candidates.map((f) => (
                 <li key={f.user.id}>
                   <label className="list-item static check">
@@ -158,12 +161,12 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
               ))}
             </ul>
             <div className="row-actions end">
-              <button className="btn small" onClick={() => { setAdding(false); setPicked(new Set()) }}>ยกเลิก</button>
-              <button className="btn small primary" disabled={busy || picked.size === 0} onClick={addMembers}>เพิ่ม ({picked.size})</button>
+              <button className="btn small" onClick={() => { setAdding(false); setPicked(new Set()) }}>{t('common.cancel')}</button>
+              <button className="btn small primary" disabled={busy || picked.size === 0} onClick={addMembers}>{t('group.addBtn', { n: picked.size })}</button>
             </div>
           </>
         ) : (
-          <button className="btn small" onClick={() => setAdding(true)}>+ เพิ่มสมาชิก</button>
+          <button className="btn small" onClick={() => setAdding(true)}>{t('group.add')}</button>
         )
       )}
       {error && <p className="error" role="alert">{error}</p>}
