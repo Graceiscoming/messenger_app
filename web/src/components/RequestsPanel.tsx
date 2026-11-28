@@ -5,7 +5,7 @@ import { friendsApi } from '../api/endpoints'
 import { keys, setRequests, useRequests } from '../hooks/queries'
 import { useT } from '../i18n'
 import AddFriendSearch from './AddFriendSearch'
-import Avatar from './Avatar'
+import ProfileAvatar from './ProfileAvatar'
 import { UserPlusIcon } from './icons'
 import { EmptyState, ListSkeleton } from './Skeletons'
 
@@ -40,7 +40,7 @@ export default function RequestsPanel() {
           <ul className="list">
             {data.incoming.map((r) => (
               <li key={r.id} className="list-item static">
-                <Avatar url={r.requester.avatarUrl} name={r.requester.displayName} />
+                <ProfileAvatar user={r.requester} />
                 <div className="list-main">
                   <span className="list-title">{r.requester.displayName}</span>
                   <span className="list-sub">@{r.requester.username}</span>
@@ -60,7 +60,7 @@ export default function RequestsPanel() {
           <ul className="list">
             {data.outgoing.map((r) => (
               <li key={r.id} className="list-item static">
-                <Avatar url={r.addressee.avatarUrl} name={r.addressee.displayName} />
+                <ProfileAvatar user={r.addressee} />
                 <div className="list-main">
                   <span className="list-title">{r.addressee.displayName}</span>
                   <span className="list-sub">@{r.addressee.username} · {t('requests.waiting')}</span>

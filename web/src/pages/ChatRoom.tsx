@@ -13,6 +13,7 @@ import { patchConversation, patchMessage, useConversation, useFriends, useMessag
 import { useT } from '../i18n'
 import { activeConversation } from '../store/activeConversation'
 import { useMe } from '../store/authContext'
+import { useOpenProfile } from '../store/profileViewer'
 import { useTypingUsers } from '../store/typing'
 import type { MessageDto } from '../types/api'
 import { convAvatar, convTitle, formatDay, otherMember, parseDate, sameDay } from '../utils/format'
@@ -33,6 +34,7 @@ function ChatRoomInner({ id }: { id: string }) {
   const { data: friends } = useFriends()
   const msgs = useMessages(id)
   const typingIds = useTypingUsers(id)
+  const openProfile = useOpenProfile()
 
   const [visible, setVisible] = useState(document.visibilityState === 'visible')
   const [menuFor, setMenuFor] = useState<number | null>(null)
@@ -152,6 +154,9 @@ function ChatRoomInner({ id }: { id: string }) {
     <div className="chat">
       <header className="chat-header">
         <button className="icon-btn back" onClick={() => navigate('/')} aria-label={t('common.back')}><BackIcon /></button>
+        <button type="button" className="chat-peer" disabled={!c}
+          onClick={() => (other ? openProfile(other) : c?.type === 'Group' && setShowInfo(true))}
+          aria-label={other ? t('userProfile.open', { name: title }) : t('chat.groupInfo')}>
         {c && <Avatar url={convAvatar(c, me.id)} name={title} group={c.type === 'Group' && !c.avatarUrl} online={friend?.isOnline} />}
         <div className="chat-title">
           <strong>{title}</strong>
@@ -161,6 +166,7 @@ function ChatRoomInner({ id }: { id: string }) {
               : friend ? (friend.isOnline ? t('common.online') : t('common.offline')) : ''}
           </small>
         </div>
+        </button>
         {c?.type === 'Group' && (
           <button className="icon-btn" onClick={() => setShowInfo(true)} aria-label={t('chat.groupInfo')} title={t('chat.groupInfo')}><InfoIcon /></button>
         )}

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useCallback, useState, type ReactNode } from 'react'
 import { Navigate, Outlet, useMatch } from 'react-router-dom'
 import AppLock from '../components/AppLock'
 import Avatar from '../components/Avatar'
@@ -8,6 +8,7 @@ import CreateGroupDialog from '../components/CreateGroupDialog'
 import FriendsPanel from '../components/FriendsPanel'
 import { ChatIcon, PlusIcon, SettingsIcon, UserPlusIcon, UsersIcon } from '../components/icons'
 import ProfileDialog from '../components/ProfileDialog'
+import ProfileViewer from '../components/ProfileViewer'
 import RequestsPanel from '../components/RequestsPanel'
 import SettingsDialog from '../components/SettingsDialog'
 import { EmptyState } from '../components/Skeletons'
@@ -51,12 +52,14 @@ function Shell({ meId }: { meId: string }) {
   const [showGroup, setShowGroup] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const openOwnProfile = useCallback(() => setShowProfile(true), [])
   const { data: requests } = useRequests()
   const { data: convs } = useConversations()
   const incoming = requests?.incoming.length ?? 0
   const unread = (convs ?? []).reduce((n, c) => n + c.unreadCount, 0)
 
   return (
+    <ProfileViewer onOpenSelf={openOwnProfile} disabled={locked}>
     <div className={`app ${inChat ? 'in-chat' : ''}`}>
       <nav className="rail" aria-label="Main" inert={locked}>
         <div className="rail-logo" aria-hidden="true"><BrandLogo /></div>
@@ -94,6 +97,7 @@ function Shell({ meId }: { meId: string }) {
       {!locked && showSettings && <SettingsDialog onClose={() => setShowSettings(false)} onOpenProfile={() => { setShowSettings(false); setShowProfile(true) }} />}
       <AppLock userId={meId} />
     </div>
+    </ProfileViewer>
   )
 }
 

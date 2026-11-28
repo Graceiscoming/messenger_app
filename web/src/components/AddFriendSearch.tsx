@@ -5,7 +5,7 @@ import { friendsApi, usersApi } from '../api/endpoints'
 import { keys, setRequests, useFriends, useRequests } from '../hooks/queries'
 import { useT } from '../i18n'
 import type { UserDto } from '../types/api'
-import Avatar from './Avatar'
+import ProfileAvatar from './ProfileAvatar'
 import { SearchIcon } from './icons'
 
 /** Search users by username and send friend requests (shown at the top of the Requests tab). */
@@ -71,7 +71,7 @@ export default function AddFriendSearch() {
             {results.length === 0 && <li className="empty">{t('friends.noUser')}</li>}
             {results.map((u) => (
               <li key={u.id} className="list-item static">
-                <Avatar url={u.avatarUrl} name={u.displayName} />
+                <ProfileAvatar user={u} />
                 <div className="list-main">
                   <span className="list-title">{u.displayName}</span>
                   <span className="list-sub">@{u.username}</span>

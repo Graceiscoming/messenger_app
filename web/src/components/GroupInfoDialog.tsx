@@ -8,6 +8,7 @@ import { keys, upsertConversation, useConversation, useFriends } from '../hooks/
 import { invalidateAuthedImage } from '../hooks/useAuthedImage'
 import { useT, type TKey } from '../i18n'
 import { useMe } from '../store/authContext'
+import { useOpenProfile } from '../store/profileViewer'
 import type { ConversationDto, MemberRole } from '../types/api'
 import Avatar from './Avatar'
 import Modal from './Modal'
@@ -22,6 +23,7 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
   const navigate = useNavigate()
   const { data: conv } = useConversation(conversationId)
   const { data: friends } = useFriends()
+  const openProfile = useOpenProfile()
   const [name, setName] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
   const [picked, setPicked] = useState<Set<string>>(new Set())
@@ -119,7 +121,10 @@ export default function GroupInfoDialog({ conversationId, onClose }: { conversat
           const canRemove = canManage && !self && m.role !== 'Owner' && (isOwner || m.role === 'Member')
           return (
             <li key={m.user.id} className="list-item static">
-              <Avatar url={m.user.avatarUrl} name={m.user.displayName} size={36} />
+              <button type="button" className="avatar-btn" aria-label={t('userProfile.open', { name: m.user.displayName })}
+                onClick={() => { onClose(); openProfile(m.user) }}>
+                <Avatar url={m.user.avatarUrl} name={m.user.displayName} size={36} />
+              </button>
               <div className="list-main">
                 <span className="list-title">{m.user.displayName}{self ? ` (${t('common.you')})` : ''}</span>
                 <span className="list-sub">{t(ROLE_KEY[m.role])}</span>

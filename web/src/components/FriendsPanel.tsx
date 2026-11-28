@@ -7,8 +7,9 @@ import { setFriends, upsertConversation, useFriends } from '../hooks/queries'
 import { useT } from '../i18n'
 import { useMe } from '../store/authContext'
 import { useBlocked } from '../store/blocked'
+import { useOpenProfile } from '../store/profileViewer'
 import type { FriendDto, UserDto } from '../types/api'
-import Avatar from './Avatar'
+import ProfileAvatar from './ProfileAvatar'
 import { MoreIcon, SearchIcon, UsersIcon } from './icons'
 import { EmptyState, ListSkeleton } from './Skeletons'
 
@@ -19,6 +20,7 @@ export default function FriendsPanel() {
   const navigate = useNavigate()
   const { data: friends, isLoading } = useFriends()
   const blocked = useBlocked(me.id)
+  const openProfile = useOpenProfile()
 
   const [q, setQ] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -87,7 +89,7 @@ export default function FriendsPanel() {
       <ul className="list">
         {filtered.map((f) => (
           <li key={f.user.id} className="list-item static clickable" onClick={() => open(f)}>
-            <Avatar url={f.user.avatarUrl} name={f.user.displayName} online={f.isOnline} />
+            <ProfileAvatar user={f.user} online={f.isOnline} />
             <div className="list-main">
               <span className="list-title">{f.user.displayName}</span>
               <span className="list-sub">{f.user.statusMessage || `@${f.user.username}`}</span>
@@ -96,6 +98,7 @@ export default function FriendsPanel() {
               <button className="icon-btn" aria-label={t('friends.menu')} onClick={() => setMenuFor(menuFor === f.user.id ? null : f.user.id)}><MoreIcon /></button>
               {menuFor === f.user.id && (
                 <div className="menu">
+                  <button onClick={() => { setMenuFor(null); openProfile(f.user) }}>{t('userProfile.view')}</button>
                   <button onClick={() => remove(f)}>{t('friends.remove')}</button>
                   <button className="danger" onClick={() => block(f)}>{t('friends.block')}</button>
                 </div>
@@ -116,7 +119,7 @@ export default function FriendsPanel() {
             <ul className="list">
               {blocked.list.map((u) => (
                 <li key={u.id} className="list-item static">
-                  <Avatar url={u.avatarUrl} name={u.displayName} />
+                  <ProfileAvatar user={u} />
                   <div className="list-main"><span className="list-title">{u.displayName}</span></div>
                   <button className="btn small" onClick={() => unblock(u)}>{t('friends.unblock')}</button>
                 </li>

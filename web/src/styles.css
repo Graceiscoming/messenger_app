@@ -568,3 +568,32 @@ a.list-item:hover, .list-item.clickable:hover, label.list-item:hover { backgroun
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- Profile card (other users) ---------- */
+.avatar-btn { padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; line-height: 0; flex-shrink: 0; transition: transform 0.15s ease; }
+.avatar-btn:hover { transform: scale(1.06); }
+.avatar-btn:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+button.sender-name { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 0.74rem; text-align: left; }
+button.sender-name:hover { color: var(--accent-text); text-decoration: underline; }
+.chat-peer { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--sp-3); padding: 4px 8px 4px 4px; margin-left: -4px; border: 0; border-radius: 12px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.chat-peer:hover:not(:disabled) { background: var(--surface-2); }
+.chat-peer:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 1px; }
+
+.uprofile { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.uprofile-cover { align-self: stretch; height: 92px; border-radius: 14px; background:
+  radial-gradient(circle at 20% 20%, rgba(255,255,255,0.35), transparent 45%),
+  linear-gradient(135deg, var(--brand-from), var(--brand-to)); }
+.uprofile-avatar { margin-top: -52px; padding: 4px; border-radius: 50%; background: var(--surface-1); box-shadow: var(--shadow-2); line-height: 0; }
+.uprofile-name { margin: var(--sp-2) 0 0; font-size: 1.25rem; }
+.uprofile-handle { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.uprofile-presence { font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.uprofile-presence::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.uprofile-presence.on { color: var(--accent-text); }
+.uprofile-presence.on::before { background: var(--online); box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+.uprofile-status { margin: var(--sp-2) 0 0; padding: 8px 14px; max-width: 100%; border-radius: 14px; background: var(--surface-2); font-style: italic; overflow-wrap: anywhere; }
+.uprofile-relation { margin-top: var(--sp-3); padding: 3px 12px; border-radius: 999px; font-size: 0.78rem; border: 1px solid var(--border); color: var(--muted); }
+.uprofile-relation.friend { color: var(--accent-text); border-color: currentColor; }
+.uprofile-relation.blocked { color: var(--danger); border-color: currentColor; }
+.uprofile-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2); margin-top: var(--sp-3); }
+.uprofile-groups { align-self: stretch; text-align: left; margin-top: var(--sp-3); border-top: 1px solid var(--border); }
+@media (prefers-reduced-motion: reduce) { .avatar-btn { transition: none; } .avatar-btn:hover { transform: none; } }
