@@ -159,6 +159,14 @@ export const en: Dict = {
   'chat.removeImage': 'Remove image',
   'chat.imagePreview': 'Image preview',
   'stickers.loadError': 'Could not load stickers',
+  'stickers.search': 'Search emoji (e.g. smile, heart)',
+  'stickers.noResults': 'No emoji found',
+  'stickers.pack.smileys': 'Smileys',
+  'stickers.pack.faces': 'Faces & gestures',
+  'stickers.pack.feelings': 'Sad, scared & angry',
+  'stickers.pack.monsters': 'Monsters',
+  'stickers.pack.animals': 'Cats & monkeys',
+  'stickers.pack.hearts': 'Hearts & symbols',
 
   // messages
   'msg.unsent': 'This message was unsent',

@@ -158,6 +158,14 @@ export const th = {
   'chat.removeImage': 'เอารูปออก',
   'chat.imagePreview': 'ตัวอย่างรูป',
   'stickers.loadError': 'โหลดสติกเกอร์ไม่สำเร็จ',
+  'stickers.search': 'ค้นหาอีโมจิ (ภาษาอังกฤษ เช่น smile, heart)',
+  'stickers.noResults': 'ไม่พบอีโมจิที่ค้นหา',
+  'stickers.pack.smileys': 'หน้ายิ้ม',
+  'stickers.pack.faces': 'สีหน้าท่าทาง',
+  'stickers.pack.feelings': 'เศร้า ตกใจ โกรธ',
+  'stickers.pack.monsters': 'ตัวประหลาด',
+  'stickers.pack.animals': 'แมวและลิง',
+  'stickers.pack.hearts': 'หัวใจและสัญลักษณ์',
 
   // messages
   'msg.unsent': 'ข้อความนี้ถูกยกเลิกการส่ง',

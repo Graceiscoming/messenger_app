@@ -357,86 +357,1185 @@ namespace Messenger.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Code = "hello",
-                            ImagePath = "/stickers/basic/hello.svg",
+                            Code = "grinning-face",
+                            ImagePath = "/stickers/fluent/grinning-face.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 2,
-                            Code = "thanks",
-                            ImagePath = "/stickers/basic/thanks.svg",
+                            Code = "beaming-face-with-smiling-eyes",
+                            ImagePath = "/stickers/fluent/beaming-face-with-smiling-eyes.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 3,
-                            Code = "love",
-                            ImagePath = "/stickers/basic/love.svg",
+                            Code = "face-with-tears-of-joy",
+                            ImagePath = "/stickers/fluent/face-with-tears-of-joy.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 4,
-                            Code = "laugh",
-                            ImagePath = "/stickers/basic/laugh.svg",
+                            Code = "grinning-face-with-big-eyes",
+                            ImagePath = "/stickers/fluent/grinning-face-with-big-eyes.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 5,
-                            Code = "cry",
-                            ImagePath = "/stickers/basic/cry.svg",
+                            Code = "grinning-face-with-smiling-eyes",
+                            ImagePath = "/stickers/fluent/grinning-face-with-smiling-eyes.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 6,
-                            Code = "ok",
-                            ImagePath = "/stickers/basic/ok.svg",
+                            Code = "grinning-face-with-sweat",
+                            ImagePath = "/stickers/fluent/grinning-face-with-sweat.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 7,
-                            Code = "sorry",
-                            ImagePath = "/stickers/basic/sorry.svg",
+                            Code = "grinning-squinting-face",
+                            ImagePath = "/stickers/fluent/grinning-squinting-face.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 8,
-                            Code = "wow",
-                            ImagePath = "/stickers/basic/wow.svg",
+                            Code = "smiling-face-with-halo",
+                            ImagePath = "/stickers/fluent/smiling-face-with-halo.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 9,
-                            Code = "angry",
-                            ImagePath = "/stickers/basic/angry.svg",
+                            Code = "winking-face",
+                            ImagePath = "/stickers/fluent/winking-face.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 10,
-                            Code = "sleepy",
-                            ImagePath = "/stickers/basic/sleepy.svg",
+                            Code = "smiling-face-with-smiling-eyes",
+                            ImagePath = "/stickers/fluent/smiling-face-with-smiling-eyes.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 11,
-                            Code = "yes",
-                            ImagePath = "/stickers/basic/yes.svg",
+                            Code = "face-savoring-food",
+                            ImagePath = "/stickers/fluent/face-savoring-food.webp",
                             PackId = 1
                         },
                         new
                         {
                             Id = 12,
-                            Code = "no",
-                            ImagePath = "/stickers/basic/no.svg",
+                            Code = "smiling-face-with-heart-eyes",
+                            ImagePath = "/stickers/fluent/smiling-face-with-heart-eyes.webp",
                             PackId = 1
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Code = "kissing-face",
+                            ImagePath = "/stickers/fluent/kissing-face.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Code = "face-blowing-a-kiss",
+                            ImagePath = "/stickers/fluent/face-blowing-a-kiss.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Code = "kissing-face-with-smiling-eyes",
+                            ImagePath = "/stickers/fluent/kissing-face-with-smiling-eyes.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Code = "kissing-face-with-closed-eyes",
+                            ImagePath = "/stickers/fluent/kissing-face-with-closed-eyes.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Code = "face-with-tongue",
+                            ImagePath = "/stickers/fluent/face-with-tongue.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Code = "winking-face-with-tongue",
+                            ImagePath = "/stickers/fluent/winking-face-with-tongue.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Code = "squinting-face-with-tongue",
+                            ImagePath = "/stickers/fluent/squinting-face-with-tongue.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Code = "slightly-smiling-face",
+                            ImagePath = "/stickers/fluent/slightly-smiling-face.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Code = "upside-down-face",
+                            ImagePath = "/stickers/fluent/upside-down-face.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Code = "money-mouth-face",
+                            ImagePath = "/stickers/fluent/money-mouth-face.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Code = "rolling-on-the-floor-laughing",
+                            ImagePath = "/stickers/fluent/rolling-on-the-floor-laughing.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Code = "star-struck",
+                            ImagePath = "/stickers/fluent/star-struck.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Code = "zany-face",
+                            ImagePath = "/stickers/fluent/zany-face.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Code = "smiling-face-with-hearts",
+                            ImagePath = "/stickers/fluent/smiling-face-with-hearts.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Code = "smiling-face-with-tear",
+                            ImagePath = "/stickers/fluent/smiling-face-with-tear.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Code = "melting-face",
+                            ImagePath = "/stickers/fluent/melting-face.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Code = "smiling-face",
+                            ImagePath = "/stickers/fluent/smiling-face.webp",
+                            PackId = 1
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Code = "hugging-face",
+                            ImagePath = "/stickers/fluent/hugging-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Code = "face-with-hand-over-mouth",
+                            ImagePath = "/stickers/fluent/face-with-hand-over-mouth.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Code = "face-with-open-eyes-and-hand-over-mouth",
+                            ImagePath = "/stickers/fluent/face-with-open-eyes-and-hand-over-mouth.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Code = "face-with-peeking-eye",
+                            ImagePath = "/stickers/fluent/face-with-peeking-eye.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Code = "shushing-face",
+                            ImagePath = "/stickers/fluent/shushing-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Code = "thinking-face",
+                            ImagePath = "/stickers/fluent/thinking-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Code = "saluting-face",
+                            ImagePath = "/stickers/fluent/saluting-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Code = "zipper-mouth-face",
+                            ImagePath = "/stickers/fluent/zipper-mouth-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Code = "face-with-raised-eyebrow",
+                            ImagePath = "/stickers/fluent/face-with-raised-eyebrow.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Code = "neutral-face",
+                            ImagePath = "/stickers/fluent/neutral-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Code = "expressionless-face",
+                            ImagePath = "/stickers/fluent/expressionless-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Code = "face-without-mouth",
+                            ImagePath = "/stickers/fluent/face-without-mouth.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Code = "dotted-line-face",
+                            ImagePath = "/stickers/fluent/dotted-line-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Code = "face-in-clouds",
+                            ImagePath = "/stickers/fluent/face-in-clouds.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Code = "smirking-face",
+                            ImagePath = "/stickers/fluent/smirking-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Code = "unamused-face",
+                            ImagePath = "/stickers/fluent/unamused-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Code = "face-with-rolling-eyes",
+                            ImagePath = "/stickers/fluent/face-with-rolling-eyes.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Code = "grimacing-face",
+                            ImagePath = "/stickers/fluent/grimacing-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Code = "face-exhaling",
+                            ImagePath = "/stickers/fluent/face-exhaling.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Code = "lying-face",
+                            ImagePath = "/stickers/fluent/lying-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Code = "shaking-face",
+                            ImagePath = "/stickers/fluent/shaking-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Code = "head-shaking-horizontally",
+                            ImagePath = "/stickers/fluent/head-shaking-horizontally.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Code = "head-shaking-vertically",
+                            ImagePath = "/stickers/fluent/head-shaking-vertically.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 53,
+                            Code = "relieved-face",
+                            ImagePath = "/stickers/fluent/relieved-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 54,
+                            Code = "pensive-face",
+                            ImagePath = "/stickers/fluent/pensive-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 55,
+                            Code = "sleepy-face",
+                            ImagePath = "/stickers/fluent/sleepy-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 56,
+                            Code = "drooling-face",
+                            ImagePath = "/stickers/fluent/drooling-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 57,
+                            Code = "sleeping-face",
+                            ImagePath = "/stickers/fluent/sleeping-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 58,
+                            Code = "cowboy-hat-face",
+                            ImagePath = "/stickers/fluent/cowboy-hat-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 59,
+                            Code = "partying-face",
+                            ImagePath = "/stickers/fluent/partying-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Code = "disguised-face",
+                            ImagePath = "/stickers/fluent/disguised-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Code = "smiling-face-with-sunglasses",
+                            ImagePath = "/stickers/fluent/smiling-face-with-sunglasses.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 62,
+                            Code = "nerd-face",
+                            ImagePath = "/stickers/fluent/nerd-face.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 63,
+                            Code = "face-with-monocle",
+                            ImagePath = "/stickers/fluent/face-with-monocle.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 64,
+                            Code = "face-with-diagonal-mouth",
+                            ImagePath = "/stickers/fluent/face-with-diagonal-mouth.webp",
+                            PackId = 2
+                        },
+                        new
+                        {
+                            Id = 65,
+                            Code = "face-with-medical-mask",
+                            ImagePath = "/stickers/fluent/face-with-medical-mask.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 66,
+                            Code = "face-with-thermometer",
+                            ImagePath = "/stickers/fluent/face-with-thermometer.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 67,
+                            Code = "face-with-head-bandage",
+                            ImagePath = "/stickers/fluent/face-with-head-bandage.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 68,
+                            Code = "nauseated-face",
+                            ImagePath = "/stickers/fluent/nauseated-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 69,
+                            Code = "face-vomiting",
+                            ImagePath = "/stickers/fluent/face-vomiting.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 70,
+                            Code = "sneezing-face",
+                            ImagePath = "/stickers/fluent/sneezing-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 71,
+                            Code = "hot-face",
+                            ImagePath = "/stickers/fluent/hot-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 72,
+                            Code = "cold-face",
+                            ImagePath = "/stickers/fluent/cold-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 73,
+                            Code = "woozy-face",
+                            ImagePath = "/stickers/fluent/woozy-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 74,
+                            Code = "knocked-out-face",
+                            ImagePath = "/stickers/fluent/knocked-out-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 75,
+                            Code = "face-with-spiral-eyes",
+                            ImagePath = "/stickers/fluent/face-with-spiral-eyes.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 76,
+                            Code = "exploding-head",
+                            ImagePath = "/stickers/fluent/exploding-head.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 77,
+                            Code = "confused-face",
+                            ImagePath = "/stickers/fluent/confused-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 78,
+                            Code = "worried-face",
+                            ImagePath = "/stickers/fluent/worried-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 79,
+                            Code = "slightly-frowning-face",
+                            ImagePath = "/stickers/fluent/slightly-frowning-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 80,
+                            Code = "frowning-face",
+                            ImagePath = "/stickers/fluent/frowning-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 81,
+                            Code = "face-with-open-mouth",
+                            ImagePath = "/stickers/fluent/face-with-open-mouth.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 82,
+                            Code = "hushed-face",
+                            ImagePath = "/stickers/fluent/hushed-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 83,
+                            Code = "astonished-face",
+                            ImagePath = "/stickers/fluent/astonished-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 84,
+                            Code = "flushed-face",
+                            ImagePath = "/stickers/fluent/flushed-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 85,
+                            Code = "pleading-face",
+                            ImagePath = "/stickers/fluent/pleading-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 86,
+                            Code = "face-holding-back-tears",
+                            ImagePath = "/stickers/fluent/face-holding-back-tears.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 87,
+                            Code = "frowning-face-with-open-mouth",
+                            ImagePath = "/stickers/fluent/frowning-face-with-open-mouth.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 88,
+                            Code = "anguished-face",
+                            ImagePath = "/stickers/fluent/anguished-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 89,
+                            Code = "fearful-face",
+                            ImagePath = "/stickers/fluent/fearful-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 90,
+                            Code = "anxious-face-with-sweat",
+                            ImagePath = "/stickers/fluent/anxious-face-with-sweat.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 91,
+                            Code = "sad-but-relieved-face",
+                            ImagePath = "/stickers/fluent/sad-but-relieved-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 92,
+                            Code = "crying-face",
+                            ImagePath = "/stickers/fluent/crying-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 93,
+                            Code = "loudly-crying-face",
+                            ImagePath = "/stickers/fluent/loudly-crying-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 94,
+                            Code = "face-screaming-in-fear",
+                            ImagePath = "/stickers/fluent/face-screaming-in-fear.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 95,
+                            Code = "confounded-face",
+                            ImagePath = "/stickers/fluent/confounded-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 96,
+                            Code = "persevering-face",
+                            ImagePath = "/stickers/fluent/persevering-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 97,
+                            Code = "disappointed-face",
+                            ImagePath = "/stickers/fluent/disappointed-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 98,
+                            Code = "downcast-face-with-sweat",
+                            ImagePath = "/stickers/fluent/downcast-face-with-sweat.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 99,
+                            Code = "weary-face",
+                            ImagePath = "/stickers/fluent/weary-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 100,
+                            Code = "tired-face",
+                            ImagePath = "/stickers/fluent/tired-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Code = "yawning-face",
+                            ImagePath = "/stickers/fluent/yawning-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Code = "face-with-steam-from-nose",
+                            ImagePath = "/stickers/fluent/face-with-steam-from-nose.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 103,
+                            Code = "pouting-face",
+                            ImagePath = "/stickers/fluent/pouting-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 104,
+                            Code = "angry-face",
+                            ImagePath = "/stickers/fluent/angry-face.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 105,
+                            Code = "face-with-symbols-on-mouth",
+                            ImagePath = "/stickers/fluent/face-with-symbols-on-mouth.webp",
+                            PackId = 3
+                        },
+                        new
+                        {
+                            Id = 106,
+                            Code = "smiling-face-with-horns",
+                            ImagePath = "/stickers/fluent/smiling-face-with-horns.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 107,
+                            Code = "angry-face-with-horns",
+                            ImagePath = "/stickers/fluent/angry-face-with-horns.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 108,
+                            Code = "skull",
+                            ImagePath = "/stickers/fluent/skull.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 109,
+                            Code = "skull-and-crossbones",
+                            ImagePath = "/stickers/fluent/skull-and-crossbones.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 110,
+                            Code = "pile-of-poo",
+                            ImagePath = "/stickers/fluent/pile-of-poo.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 111,
+                            Code = "clown-face",
+                            ImagePath = "/stickers/fluent/clown-face.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 112,
+                            Code = "ogre",
+                            ImagePath = "/stickers/fluent/ogre.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 113,
+                            Code = "goblin",
+                            ImagePath = "/stickers/fluent/goblin.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 114,
+                            Code = "ghost",
+                            ImagePath = "/stickers/fluent/ghost.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 115,
+                            Code = "alien",
+                            ImagePath = "/stickers/fluent/alien.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 116,
+                            Code = "alien-monster",
+                            ImagePath = "/stickers/fluent/alien-monster.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 117,
+                            Code = "robot",
+                            ImagePath = "/stickers/fluent/robot.webp",
+                            PackId = 4
+                        },
+                        new
+                        {
+                            Id = 118,
+                            Code = "grinning-cat",
+                            ImagePath = "/stickers/fluent/grinning-cat.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 119,
+                            Code = "grinning-cat-with-smiling-eyes",
+                            ImagePath = "/stickers/fluent/grinning-cat-with-smiling-eyes.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 120,
+                            Code = "cat-with-tears-of-joy",
+                            ImagePath = "/stickers/fluent/cat-with-tears-of-joy.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 121,
+                            Code = "smiling-cat-with-heart-eyes",
+                            ImagePath = "/stickers/fluent/smiling-cat-with-heart-eyes.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 122,
+                            Code = "cat-with-wry-smile",
+                            ImagePath = "/stickers/fluent/cat-with-wry-smile.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 123,
+                            Code = "kissing-cat",
+                            ImagePath = "/stickers/fluent/kissing-cat.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 124,
+                            Code = "weary-cat",
+                            ImagePath = "/stickers/fluent/weary-cat.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 125,
+                            Code = "crying-cat",
+                            ImagePath = "/stickers/fluent/crying-cat.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 126,
+                            Code = "pouting-cat",
+                            ImagePath = "/stickers/fluent/pouting-cat.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 127,
+                            Code = "see-no-evil-monkey",
+                            ImagePath = "/stickers/fluent/see-no-evil-monkey.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 128,
+                            Code = "hear-no-evil-monkey",
+                            ImagePath = "/stickers/fluent/hear-no-evil-monkey.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 129,
+                            Code = "speak-no-evil-monkey",
+                            ImagePath = "/stickers/fluent/speak-no-evil-monkey.webp",
+                            PackId = 5
+                        },
+                        new
+                        {
+                            Id = 130,
+                            Code = "love-letter",
+                            ImagePath = "/stickers/fluent/love-letter.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 131,
+                            Code = "heart-with-arrow",
+                            ImagePath = "/stickers/fluent/heart-with-arrow.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 132,
+                            Code = "heart-with-ribbon",
+                            ImagePath = "/stickers/fluent/heart-with-ribbon.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 133,
+                            Code = "sparkling-heart",
+                            ImagePath = "/stickers/fluent/sparkling-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 134,
+                            Code = "growing-heart",
+                            ImagePath = "/stickers/fluent/growing-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 135,
+                            Code = "beating-heart",
+                            ImagePath = "/stickers/fluent/beating-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 136,
+                            Code = "revolving-hearts",
+                            ImagePath = "/stickers/fluent/revolving-hearts.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 137,
+                            Code = "two-hearts",
+                            ImagePath = "/stickers/fluent/two-hearts.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 138,
+                            Code = "heart-decoration",
+                            ImagePath = "/stickers/fluent/heart-decoration.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 139,
+                            Code = "heart-exclamation",
+                            ImagePath = "/stickers/fluent/heart-exclamation.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 140,
+                            Code = "broken-heart",
+                            ImagePath = "/stickers/fluent/broken-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 141,
+                            Code = "heart-on-fire",
+                            ImagePath = "/stickers/fluent/heart-on-fire.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 142,
+                            Code = "mending-heart",
+                            ImagePath = "/stickers/fluent/mending-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 143,
+                            Code = "red-heart",
+                            ImagePath = "/stickers/fluent/red-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 144,
+                            Code = "pink-heart",
+                            ImagePath = "/stickers/fluent/pink-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 145,
+                            Code = "orange-heart",
+                            ImagePath = "/stickers/fluent/orange-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 146,
+                            Code = "yellow-heart",
+                            ImagePath = "/stickers/fluent/yellow-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 147,
+                            Code = "green-heart",
+                            ImagePath = "/stickers/fluent/green-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 148,
+                            Code = "blue-heart",
+                            ImagePath = "/stickers/fluent/blue-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 149,
+                            Code = "light-blue-heart",
+                            ImagePath = "/stickers/fluent/light-blue-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 150,
+                            Code = "purple-heart",
+                            ImagePath = "/stickers/fluent/purple-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 151,
+                            Code = "brown-heart",
+                            ImagePath = "/stickers/fluent/brown-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 152,
+                            Code = "black-heart",
+                            ImagePath = "/stickers/fluent/black-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 153,
+                            Code = "grey-heart",
+                            ImagePath = "/stickers/fluent/grey-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 154,
+                            Code = "white-heart",
+                            ImagePath = "/stickers/fluent/white-heart.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 155,
+                            Code = "kiss-mark",
+                            ImagePath = "/stickers/fluent/kiss-mark.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 156,
+                            Code = "hundred-points",
+                            ImagePath = "/stickers/fluent/hundred-points.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 157,
+                            Code = "anger-symbol",
+                            ImagePath = "/stickers/fluent/anger-symbol.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 158,
+                            Code = "collision",
+                            ImagePath = "/stickers/fluent/collision.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 159,
+                            Code = "dizzy",
+                            ImagePath = "/stickers/fluent/dizzy.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 160,
+                            Code = "sweat-droplets",
+                            ImagePath = "/stickers/fluent/sweat-droplets.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 161,
+                            Code = "dashing-away",
+                            ImagePath = "/stickers/fluent/dashing-away.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 162,
+                            Code = "hole",
+                            ImagePath = "/stickers/fluent/hole.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 163,
+                            Code = "bomb",
+                            ImagePath = "/stickers/fluent/bomb.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 164,
+                            Code = "speech-balloon",
+                            ImagePath = "/stickers/fluent/speech-balloon.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 165,
+                            Code = "eye-in-speech-bubble",
+                            ImagePath = "/stickers/fluent/eye-in-speech-bubble.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 166,
+                            Code = "left-speech-bubble",
+                            ImagePath = "/stickers/fluent/left-speech-bubble.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 167,
+                            Code = "right-anger-bubble",
+                            ImagePath = "/stickers/fluent/right-anger-bubble.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 168,
+                            Code = "thought-balloon",
+                            ImagePath = "/stickers/fluent/thought-balloon.webp",
+                            PackId = 6
+                        },
+                        new
+                        {
+                            Id = 169,
+                            Code = "zzz",
+                            ImagePath = "/stickers/fluent/zzz.webp",
+                            PackId = 6
                         });
                 });
 
@@ -466,8 +1565,38 @@ namespace Messenger.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "basic",
-                            ThumbnailPath = "/stickers/basic/hello.svg"
+                            Name = "smileys",
+                            ThumbnailPath = "/stickers/fluent/grinning-face.webp"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "faces",
+                            ThumbnailPath = "/stickers/fluent/thinking-face.webp"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "feelings",
+                            ThumbnailPath = "/stickers/fluent/loudly-crying-face.webp"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "monsters",
+                            ThumbnailPath = "/stickers/fluent/smiling-face-with-horns.webp"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "animals",
+                            ThumbnailPath = "/stickers/fluent/grinning-cat.webp"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "hearts",
+                            ThumbnailPath = "/stickers/fluent/red-heart.webp"
                         });
                 });
 

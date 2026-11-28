@@ -204,7 +204,7 @@ input[type='checkbox'] { width: 1.1rem; height: 1.1rem; accent-color: var(--chec
 .skeleton.circle { width: 2.75rem; height: 2.75rem; border-radius: 50%; flex-shrink: 0; }
 .skeleton.line { height: 0.8rem; margin: 4px 0; }
 .skeleton.line.short { width: 40%; height: 0.65rem; }
-.skeleton.sk-sticker { height: 4.5rem; border-radius: var(--r-md); }
+.skeleton.sk-sticker { height: 3.4rem; border-radius: var(--r-md); }
 .msg-skeleton { display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-4) 0; }
 .skeleton.bubble-sk { height: 2.5rem; border-radius: var(--r-lg); align-self: flex-start; }
 .skeleton.bubble-sk.mine { align-self: flex-end; }
@@ -385,12 +385,14 @@ a.list-item:hover, .list-item.clickable:hover, label.list-item:hover { backgroun
 .reply-bar, .image-preview { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); padding: 6px var(--sp-3); background: var(--accent-soft); font-size: 0.85rem; color: var(--text-2); }
 .image-preview { justify-content: flex-start; background: var(--surface-2); }
 .image-preview img { height: 4rem; border-radius: var(--r-sm); }
-.sticker-picker { position: absolute; bottom: 100%; left: var(--sp-3); right: var(--sp-3); max-width: 28rem; background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--r-lg) var(--r-lg) 0 0; box-shadow: var(--shadow-3); max-height: 16rem; overflow-y: auto; animation: rise 180ms var(--ease); }
-.sticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr)); gap: 6px; padding: var(--sp-3); }
+.sticker-picker { position: absolute; bottom: 100%; left: var(--sp-3); right: var(--sp-3); max-width: 28rem; background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--r-lg) var(--r-lg) 0 0; box-shadow: var(--shadow-3); max-height: 22rem; overflow-y: auto; animation: rise 180ms var(--ease); }
+.sticker-search { position: sticky; top: 0; z-index: 1; padding: var(--sp-2) var(--sp-3); background: var(--surface-1); border-bottom: 1px solid var(--border); }
+.sticker-pack-title { padding: var(--sp-2) var(--sp-3) 0; font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+.sticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(3.4rem, 1fr)); gap: 4px; padding: var(--sp-2) var(--sp-3) var(--sp-3); }
 .sticker-btn { border: 0; background: none; border-radius: var(--r-md); padding: 4px; transition: background var(--dur) var(--ease), transform var(--dur) var(--ease); }
 .sticker-btn:hover { background: var(--surface-3); transform: scale(1.06); }
 .sticker-btn img { width: 100%; display: block; }
-.sticker-tabs { display: flex; gap: 6px; padding: 6px var(--sp-3); border-top: 1px solid var(--border); }
+.sticker-tabs { position: sticky; bottom: 0; display: flex; gap: 4px; padding: 6px var(--sp-3); border-top: 1px solid var(--border); background: var(--surface-1); overflow-x: auto; }
 .sticker-tabs button { border: 0; background: none; border-radius: var(--r-sm); padding: 4px 8px; color: var(--text); }
 .sticker-tabs button.active { background: var(--accent-soft); }
 .sticker-tabs img { height: 1.6rem; }
