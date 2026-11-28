@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Navigate, Outlet, useMatch } from 'react-router-dom'
 import Avatar from '../components/Avatar'
+import BrandLogo from '../components/BrandLogo'
 import ConversationList from '../components/ConversationList'
 import CreateGroupDialog from '../components/CreateGroupDialog'
 import FriendsPanel from '../components/FriendsPanel'
@@ -54,7 +55,7 @@ function Shell({ meId }: { meId: string }) {
   return (
     <div className={`app ${inChat ? 'in-chat' : ''}`}>
       <nav className="rail" aria-label="Main">
-        <div className="rail-logo" aria-hidden="true"><ChatIcon /></div>
+        <div className="rail-logo" aria-hidden="true"><BrandLogo /></div>
         <RailButton active={tab === 'chats'} label={t('tab.chats')} badge={unread} onClick={() => setTab('chats')}><ChatIcon /></RailButton>
         <RailButton active={tab === 'friends'} label={t('tab.friends')} onClick={() => setTab('friends')}><UsersIcon /></RailButton>
         <RailButton active={tab === 'requests'} label={t('tab.requests')} badge={incoming} onClick={() => setTab('requests')}><UserPlusIcon /></RailButton>

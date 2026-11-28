@@ -8,14 +8,14 @@
   --fs-root: 16px;
 
   /* brand */
-  --brand-from: #10b981;
-  --brand-to: #14b8a6;
-  --grad: linear-gradient(135deg, #047857 0%, #0f766e 100%); /* text-bearing surfaces (white text >= 5.4:1) */
+  --brand-from: #3b82f6;
+  --brand-to: #ec4899;
+  --grad: linear-gradient(135deg, #2563eb 0%, #be185d 100%); /* text-bearing surfaces (white text >= 5.1:1 at both stops) */
   --grad-soft: linear-gradient(135deg, var(--brand-from), var(--brand-to)); /* decorative only */
   --on-accent: #ffffff;
   --white: #ffffff;
   --online: #22c55e;
-  --check: #047857;
+  --check: #2563eb;
   --scrim: rgba(0, 0, 0, 0.88);
 
   /* surfaces (light) */
@@ -32,8 +32,8 @@
   --text: #0f172a;
   --text-2: #334155;
   --muted: #586579;
-  --accent-text: #047857;
-  --accent-soft: #dff5ea;
+  --accent-text: #1d4ed8;
+  --accent-soft: #e7ebff;
   --danger: #b91c1c;
   --danger-soft: #fde8e8;
   --warn-bg: #fff3dc;
@@ -41,7 +41,7 @@
   --badge-bg: #dc2626;
 
   --border: rgba(15, 23, 42, 0.1);
-  --focus: #0d9488;
+  --focus: #6366f1;
 
   /* shape */
   --r-sm: 8px;
@@ -89,8 +89,8 @@
   --text: #e8eef6;
   --text-2: #c3cedc;
   --muted: #93a4b8;
-  --accent-text: #34d399;
-  --accent-soft: rgba(52, 211, 153, 0.14);
+  --accent-text: #93b4ff;
+  --accent-soft: rgba(129, 140, 248, 0.16);
   --danger: #f87171;
   --danger-soft: rgba(248, 113, 113, 0.14);
   --warn-bg: #2d2410;
@@ -98,7 +98,7 @@
   --badge-bg: #dc2626;
 
   --border: rgba(255, 255, 255, 0.09);
-  --focus: #2dd4bf;
+  --focus: #a5b4fc;
 
   --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-2: 0 4px 14px rgba(0, 0, 0, 0.45);
@@ -191,8 +191,8 @@ input[type='checkbox'] { width: 1.1rem; height: 1.1rem; accent-color: var(--chec
 .badge { background: var(--badge-bg); color: var(--white); border-radius: var(--r-pill); min-width: 1.25rem; height: 1.25rem; padding: 0 6px; font-size: 0.72rem; display: inline-grid; place-items: center; font-weight: 700; flex-shrink: 0; }
 .badge.floating { position: absolute; top: 2px; right: 6px; box-shadow: 0 0 0 2px var(--surface-1); }
 
-.brand { display: flex; align-items: center; gap: var(--sp-2); font-weight: 700; font-size: 1.25rem; color: var(--text); }
-.brand-mark { display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: var(--r-md); background: var(--grad); color: var(--on-accent); font-size: 1.2rem; box-shadow: var(--shadow-2); }
+.brand { display: flex; justify-content: center; margin: 0; }
+.brand-logo { display: block; width: min(15rem, 80%); height: auto; filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--brand-from) 22%, transparent)); }
 
 .splash { display: grid; place-items: center; height: 100%; }
 .spinner { width: 2rem; height: 2rem; border-radius: 50%; border: 3px solid var(--surface-3); border-top-color: var(--focus); animation: spin 0.8s linear infinite; }
@@ -234,7 +234,8 @@ input[type='checkbox'] { width: 1.1rem; height: 1.1rem; accent-color: var(--chec
 .app { display: grid; grid-template-columns: var(--rail-w) var(--panel-w) minmax(0, 1fr); height: 100dvh; }
 
 .rail { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); padding: var(--sp-3) 0; background: var(--surface-1); border-right: 1px solid var(--border); z-index: 3; }
-.rail-logo { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: var(--r-lg); background: var(--grad); color: var(--on-accent); font-size: 1.4rem; margin-bottom: var(--sp-3); box-shadow: 0 6px 16px color-mix(in srgb, var(--brand-from) 40%, transparent); }
+.rail-logo { display: grid; place-items: center; width: 2.8rem; height: 2.8rem; margin-bottom: var(--sp-3); }
+.rail-logo img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 3px 6px color-mix(in srgb, var(--brand-from) 30%, transparent)); }
 .rail-spacer { flex: 1; }
 .rail-btn { position: relative; display: grid; place-items: center; width: 3rem; height: 3rem; border: 0; background: transparent; color: var(--muted); border-radius: var(--r-lg); font-size: 1.4rem; transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }
 .rail-btn:hover { background: var(--surface-3); color: var(--text); }

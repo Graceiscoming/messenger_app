@@ -1,7 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { errorMessage } from '../api/client'
-import { ChatIcon } from '../components/icons'
 import ThemeToggle from '../components/ThemeToggle'
 import { useT } from '../i18n'
 import { useAuth } from '../store/authContext'
@@ -22,7 +21,7 @@ function Shell({ title, children }: { title: string; children: ReactNode }) {
         <ThemeToggle />
       </div>
       <div className="auth-card">
-        <div className="brand"><span className="brand-mark"><ChatIcon /></span> Messenger</div>
+        <h2 className="brand"><img className="brand-logo" src="/kubchat-logo.webp" alt="KubChat" width={720} height={540} /></h2>
         <h1>{title}</h1>
         {children}
       </div>

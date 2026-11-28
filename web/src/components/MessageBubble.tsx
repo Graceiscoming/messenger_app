@@ -70,6 +70,20 @@ export default function MessageBubble({
 
   const cls = ['msg-row', mine ? 'mine' : 'theirs', groupedPrev && 'gp', groupedNext && 'gn', animate && 'anim'].filter(Boolean).join(' ')
 
+  // The ⋯ menu sits on the outer side of the bubble (left of own messages, right of others'),
+  // and its popup opens away from the bubble so it never covers the message.
+  const menu = !msg.isUnsent && (
+    <div className="menu-wrap msg-menu">
+      <button className="icon-btn" aria-label={t('msg.menu')} onClick={(e) => { e.stopPropagation(); onToggleMenu() }}><MoreIcon /></button>
+      {menuOpen && (
+        <div className={`menu ${mine ? '' : 'left'}`}>
+          <button onClick={onReply}><ReplyIcon /> {t('msg.reply')}</button>
+          {unsendable && <button className="danger" onClick={onUnsend}>{t('msg.unsend')}</button>}
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <div className={cls}>
       {!mine && (groupedNext
@@ -78,20 +92,11 @@ export default function MessageBubble({
       <div className="msg-col">
         {!mine && isGroup && !groupedPrev && <span className="sender-name">{msg.sender.displayName}</span>}
         <div className="msg-line">
+          {mine && menu}
           {mine && !groupedNext && <MetaBlock readLabel={readLabel} time={time} />}
           {body}
           {!mine && !groupedNext && <MetaBlock readLabel={null} time={time} />}
-          {!msg.isUnsent && (
-            <div className="menu-wrap msg-menu">
-              <button className="icon-btn" aria-label={t('msg.menu')} onClick={(e) => { e.stopPropagation(); onToggleMenu() }}><MoreIcon /></button>
-              {menuOpen && (
-                <div className={`menu ${mine ? 'left' : ''}`}>
-                  <button onClick={onReply}><ReplyIcon /> {t('msg.reply')}</button>
-                  {unsendable && <button className="danger" onClick={onUnsend}>{t('msg.unsend')}</button>}
-                </div>
-              )}
-            </div>
-          )}
+          {!mine && menu}
         </div>
       </div>
     </div>

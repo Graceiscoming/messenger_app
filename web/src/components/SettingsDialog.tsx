@@ -114,7 +114,7 @@ export default function SettingsDialog({ onClose, onOpenProfile }: { onClose: ()
 
       <section className="settings-section">
         <h3>{t('settings.about')}</h3>
-        <Row title="Messenger"><span className="muted">{t('settings.version', { v: APP_VERSION })}</span></Row>
+        <Row title="KubChat"><span className="muted">{t('settings.version', { v: APP_VERSION })}</span></Row>
       </section>
     </Modal>
   )
