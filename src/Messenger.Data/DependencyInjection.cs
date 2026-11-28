@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         services.AddScoped<IStickerRepository, StickerRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<INoteRepository, NoteRepository>();
         return services;
     }
 

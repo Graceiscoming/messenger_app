@@ -68,6 +68,16 @@ Error format (RFC 7807 ProblemDetails): `{ "type", "title", "status", "detail" }
 | GET | `/files/{attachmentId}` | ดึงไฟล์ (ต้องเป็นสมาชิกห้องที่มีข้อความนั้น หรือเจ้าของ) |
 | GET | `/stickers` | รายการ sticker pack ทั้งหมด |
 
+### Notes (เพิ่มภายหลัง — ดู decisions.md)
+| Method | Path | คำอธิบาย |
+| :--- | :--- | :--- |
+| GET | `/notes` | โน้ตที่ยังไม่หมดอายุของตัวเอง (มาก่อน) และของเพื่อน → `NoteDto[]` |
+| PUT | `/notes/me` | `{ content }` 1–60 ตัวอักษร ลง/แทนที่โน้ตของตัวเอง (อยู่ 24 ชม.) → `NoteDto` |
+| DELETE | `/notes/me` | ลบโน้ตของตัวเอง → 204 |
+| POST | `/notes/{id}/replies` | `{ content }` ตอบกลับโน้ตของเพื่อน = ส่งข้อความในแชท 1:1 → 201 `MessageDto` (มี `noteReply`) |
+
+`NoteDto = { id, user: UserDto, content, createdAt, expiresAt }` · `MessageDto.noteReply = { content } | null`
+
 ### HTTP Status ที่ใช้
 200/201/204 สำเร็จ · 400 validation · 401 ไม่ได้ล็อกอิน · 403 ไม่มีสิทธิ์ (ไม่ใช่เพื่อน/สมาชิก/เจ้าของ) · 404 ไม่พบ · 409 ซ้ำ/ขัดสถานะ (เช่น เลยเวลา unsend) · 413 ไฟล์ใหญ่เกิน
 
@@ -86,6 +96,7 @@ Error format (RFC 7807 ProblemDetails): `{ "type", "title", "status", "detail" }
 | `FriendRemoved` | `{ userId }` | ถูกลบเพื่อน |
 | `PresenceChanged` | `{ userId, isOnline }` | ออนไลน์/ออฟไลน์ (ส่งให้เพื่อน) |
 | `UserTyping` | `{ conversationId, userId }` | กำลังพิมพ์ |
+| `NotesChanged` | `{ userId }` | เพื่อน (หรือตัวเองอีกเครื่อง) ลง/ลบโน้ต → client ดึง `GET /notes` ใหม่ |
 
 **Client → Server:** `Typing(conversationId)`
 

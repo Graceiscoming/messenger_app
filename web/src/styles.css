@@ -426,6 +426,57 @@ a.list-item:hover, .list-item.clickable:hover, label.list-item:hover { backgroun
 }
 
 /* =========================================================
+   Notes (Instagram-style)
+   ========================================================= */
+.notes-bar {
+  list-style: none; margin: 0; padding: 2.2rem var(--sp-4) var(--sp-3); display: flex; gap: 0.9rem;
+  overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border);
+}
+.notes-bar::-webkit-scrollbar { display: none; }
+.note-item {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; width: 4.6rem;
+  border: 0; background: none; padding: 0; cursor: pointer; color: var(--text);
+}
+.note-item .avatar { transition: transform 160ms var(--ease); }
+.note-item:hover .avatar { transform: scale(1.04); }
+.note-item:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 12px; }
+.note-bubble {
+  position: absolute; bottom: calc(56px + 1.25rem - 0.9rem); left: 50%; transform: translateX(-50%); z-index: 1;
+  max-width: 5.6rem; width: max-content; padding: 0.35rem 0.55rem; border-radius: 14px;
+  background: var(--surface-1); color: var(--text); border: 1px solid var(--border);
+  box-shadow: var(--shadow-2); font-size: 0.72rem; line-height: 1.25; text-align: center;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word;
+}
+.note-bubble::after { /* thought-bubble dot under the note */
+  content: ''; position: absolute; left: 30%; bottom: -5px; width: 7px; height: 7px; border-radius: 50%;
+  background: inherit; border: 1px solid var(--border);
+}
+.note-bubble.empty { color: var(--muted); display: inline-flex; align-items: center; gap: 0.2rem; white-space: nowrap; }
+.note-bubble.empty svg { color: var(--accent-text); flex-shrink: 0; }
+.note-item:first-child .note-bubble:not(.empty) { border-color: color-mix(in srgb, var(--brand-from) 45%, var(--border)); }
+.note-name { font-size: 0.74rem; color: var(--text-2); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.note-preview { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; padding: 0.4rem 0 0.8rem; }
+.note-preview .avatar { margin-top: -0.2rem; }
+.note-bubble.big {
+  position: relative; left: auto; bottom: auto; transform: none; max-width: 85%; font-size: 1rem; padding: 0.7rem 1rem;
+  border-radius: 20px; -webkit-line-clamp: unset; display: block;
+}
+.note-bubble.big::after { left: 46%; bottom: -6px; width: 9px; height: 9px; }
+.note-editor { display: flex; flex-direction: column; gap: 0.5rem; }
+.note-meta { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.8rem; color: var(--muted); }
+.note-meta .warn { color: var(--danger); }
+.note-reply-form { display: flex; gap: 0.5rem; align-items: center; }
+.note-reply-form input { flex: 1; border-radius: var(--r-pill); }
+
+.note-quote {
+  display: flex; flex-direction: column; gap: 2px; margin-bottom: 6px; padding: 0.35rem 0.6rem;
+  border-radius: 12px; font-size: 0.8rem; background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.note-quote-label { font-size: 0.72rem; opacity: 0.8; }
+.note-quote-text { font-weight: 600; }
+
+/* =========================================================
    PIN lock + keypad
    ========================================================= */
 .app-lock {

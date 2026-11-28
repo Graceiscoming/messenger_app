@@ -77,6 +77,25 @@ export interface MessageDto {
   replyTo: ReplyDto | null
   createdAt: string
   isUnsent: boolean
+  /** Set when this message replied to a note (text snapshot; the note's owner is the other member). */
+  noteReply?: NoteReplyDto | null
+}
+
+export interface NoteReplyDto {
+  content: string
+}
+
+/** Instagram-style note: up to 60 chars, visible to friends for 24 h. */
+export interface NoteDto {
+  id: string
+  user: UserDto
+  content: string
+  createdAt: string
+  expiresAt: string
+}
+
+export interface NotesChangedEvent {
+  userId: string
 }
 
 export interface ConversationDto {

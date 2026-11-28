@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery, type InfiniteData, type QueryClient } from '@tanstack/react-query'
-import { conversationsApi, filesApi, friendsApi, messagesApi } from '../api/endpoints'
+import { conversationsApi, filesApi, friendsApi, messagesApi, notesApi } from '../api/endpoints'
 import { PAGE_SIZE } from '../constants'
 import type {
   ConversationDto, FriendDto, FriendRequestsDto, MessageDto,
@@ -13,6 +13,7 @@ export const keys = {
   friends: ['friends'] as const,
   requests: ['requests'] as const,
   stickers: ['stickers'] as const,
+  notes: ['notes'] as const,
 }
 
 export type MessagePages = InfiniteData<MessageDto[], number | undefined>
@@ -27,6 +28,15 @@ export const useFriends = () => useQuery({ queryKey: keys.friends, queryFn: frie
 export const useRequests = () => useQuery({ queryKey: keys.requests, queryFn: friendsApi.requests })
 export const useStickers = () =>
   useQuery({ queryKey: keys.stickers, queryFn: filesApi.stickers, staleTime: Infinity })
+
+/** Own note first, then friends'. Expired notes are dropped client-side too; refetched every minute. */
+export const useNotes = () =>
+  useQuery({
+    queryKey: keys.notes,
+    queryFn: notesApi.list,
+    refetchInterval: 60_000,
+    select: (list) => list.filter((n) => Date.parse(n.expiresAt) > Date.now()),
+  })
 
 export const useMessages = (convId: string) =>
   useInfiniteQuery({

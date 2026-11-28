@@ -72,4 +72,6 @@ public interface IRealtimeNotifier
     Task NotifyMembershipChanged(Guid conversationId, IReadOnlyCollection<Guid> addedUserIds, IReadOnlyCollection<Guid> removedUserIds, CancellationToken ct = default);
     /// <summary>-> MessageRead { conversationId, userId, messageId } to the conversation group.</summary>
     Task NotifyRead(Guid conversationId, Guid userId, long messageId, CancellationToken ct = default);
+    /// <summary>-> NotesChanged { userId = authorId } to each recipient's personal group (clients refetch GET /notes).</summary>
+    Task NotifyNotesChanged(IEnumerable<Guid> recipientIds, Guid authorId, CancellationToken ct = default);
 }

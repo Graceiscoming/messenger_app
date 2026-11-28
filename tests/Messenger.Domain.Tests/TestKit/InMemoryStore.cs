@@ -14,6 +14,7 @@ public sealed class InMemoryStore : IUnitOfWork
     public List<Message> Messages { get; } = new();
     public List<Attachment> Attachments { get; } = new();
     public List<Sticker> Stickers { get; } = new();
+    public List<Note> Notes { get; } = new();
     public int SaveCount { get; private set; }
     private long _nextMessageId = 1;
 
@@ -25,6 +26,7 @@ public sealed class InMemoryStore : IUnitOfWork
     public IAttachmentRepository AttachmentRepo { get; }
     public IStickerRepository StickerRepo { get; }
     public IRefreshTokenRepository RefreshTokenRepo { get; }
+    public INoteRepository NoteRepo { get; }
 
     public InMemoryStore()
     {
@@ -36,6 +38,7 @@ public sealed class InMemoryStore : IUnitOfWork
         AttachmentRepo = new AttachmentRepo(this);
         StickerRepo = new StickerRepo(this);
         RefreshTokenRepo = new RefreshTokenRepo(this);
+        NoteRepo = new NoteRepo(this);
     }
 
     public Task<int> SaveChangesAsync(CancellationToken ct = default) => Task.FromResult(++SaveCount);
@@ -186,6 +189,20 @@ internal sealed class StickerRepo(InMemoryStore s) : IStickerRepository
 {
     public Task<IReadOnlyList<StickerPack>> ListPacksAsync(CancellationToken ct = default) => Task.FromResult<IReadOnlyList<StickerPack>>(new List<StickerPack>());
     public Task<Sticker?> FindByIdAsync(int id, CancellationToken ct = default) => Task.FromResult(s.Stickers.FirstOrDefault(x => x.Id == id));
+}
+
+internal sealed class NoteRepo(InMemoryStore s) : INoteRepository
+{
+    private Note Hydrate(Note n) { n.AttachUser(s.Users.First(u => u.Id == n.UserId)); return n; }
+    public Task<Note?> FindByIdAsync(Guid id, CancellationToken ct = default)
+        => Task.FromResult(s.Notes.Where(n => n.Id == id).Select(Hydrate).FirstOrDefault());
+    public Task<IReadOnlyList<Note>> ListByUserAsync(Guid userId, CancellationToken ct = default)
+        => Task.FromResult<IReadOnlyList<Note>>(s.Notes.Where(n => n.UserId == userId).ToList());
+    public Task<IReadOnlyList<Note>> ListActiveByUsersAsync(IReadOnlyCollection<Guid> ids, DateTime now, CancellationToken ct = default)
+        => Task.FromResult<IReadOnlyList<Note>>(s.Notes.Where(n => ids.Contains(n.UserId) && n.ExpiresAt > now)
+            .OrderByDescending(n => n.CreatedAt).Select(Hydrate).ToList());
+    public Task AddAsync(Note note, CancellationToken ct = default) { s.Notes.Add(note); return Task.CompletedTask; }
+    public void Remove(Note note) => s.Notes.Remove(note);
 }
 
 internal sealed class RefreshTokenRepo(InMemoryStore s) : IRefreshTokenRepository

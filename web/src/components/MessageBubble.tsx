@@ -42,6 +42,18 @@ function ReplyQuote({ msg }: { msg: MessageDto }) {
   )
 }
 
+/** Quote of the note this message replied to (Instagram-style "Replied to your note"). */
+function NoteQuote({ msg, mine }: { msg: MessageDto; mine: boolean }) {
+  const { t } = useT()
+  if (!msg.noteReply) return null
+  return (
+    <div className="note-quote">
+      <span className="note-quote-label">{t(mine ? 'notes.repliedMine' : 'notes.repliedTheirs')}</span>
+      <span className="note-quote-text">{msg.noteReply.content}</span>
+    </div>
+  )
+}
+
 export default function MessageBubble({
   msg, mine, isGroup, groupedPrev, groupedNext, animate, readLabel, menuOpen,
   onToggleMenu, onReply, onUnsend, onImageClick, onMediaLoad,
@@ -60,6 +72,7 @@ export default function MessageBubble({
     <img className="sticker" src={msg.sticker.imageUrl} alt={msg.sticker.code} onLoad={onMediaLoad} title={time} />
   ) : (
     <div className="bubble" title={time}>
+      <NoteQuote msg={msg} mine={mine} />
       <ReplyQuote msg={msg} />
       {msg.type === 'Image' && msg.attachmentUrl && (
         <AuthedImage url={msg.attachmentUrl} className="msg-image" alt={t('msg.imageAlt')} onLoad={onMediaLoad} onClick={onImageClick} />

@@ -233,6 +233,11 @@ namespace Messenger.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<string>("NoteReplyContent")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)")
+                        .HasColumnName("note_reply_content");
+
                     b.Property<long?>("ReplyToMessageId")
                         .HasColumnType("bigint")
                         .HasColumnName("reply_to_message_id");
@@ -276,6 +281,42 @@ namespace Messenger.Data.Migrations
                         {
                             t.HasCheckConstraint("ck_messages_text_has_content", "type <> 0 OR content IS NOT NULL OR unsent_at IS NOT NULL");
                         });
+                });
+
+            modelBuilder.Entity("Messenger.Domain.Entities.Note", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)")
+                        .HasColumnName("content");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_notes");
+
+                    b.HasIndex("ExpiresAt")
+                        .HasDatabaseName("ix_notes_expires_at");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_notes_user_id");
+
+                    b.ToTable("notes", (string)null);
                 });
 
             modelBuilder.Entity("Messenger.Domain.Entities.RefreshToken", b =>
@@ -1795,6 +1836,18 @@ namespace Messenger.Data.Migrations
                     b.Navigation("Sender");
 
                     b.Navigation("Sticker");
+                });
+
+            modelBuilder.Entity("Messenger.Domain.Entities.Note", b =>
+                {
+                    b.HasOne("Messenger.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notes_users_user_id");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Messenger.Domain.Entities.RefreshToken", b =>

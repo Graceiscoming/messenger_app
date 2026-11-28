@@ -109,6 +109,7 @@ internal sealed class MessageConfiguration : IEntityTypeConfiguration<Message>
         b.Property(x => x.Id).ValueGeneratedOnAdd().UseIdentityByDefaultColumn();
         b.Property(x => x.Type).HasConversion<short>();
         b.Property(x => x.Content).HasMaxLength(4000);
+        b.Property(x => x.NoteReplyContent).HasMaxLength(Note.MaxLength);
         b.Ignore(x => x.IsUnsent);
         b.HasIndex(x => new { x.ConversationId, x.Id }).IsDescending(false, true);
         b.HasOne<Conversation>().WithMany().HasForeignKey(x => x.ConversationId).OnDelete(DeleteBehavior.Cascade);
@@ -118,6 +119,20 @@ internal sealed class MessageConfiguration : IEntityTypeConfiguration<Message>
         b.HasOne(x => x.ReplyTo).WithMany().HasForeignKey(x => x.ReplyToMessageId).OnDelete(DeleteBehavior.SetNull);
         b.HasIndex(x => x.AttachmentId);
         b.HasIndex(x => x.ReplyToMessageId);
+    }
+}
+
+internal sealed class NoteConfiguration : IEntityTypeConfiguration<Note>
+{
+    public void Configure(EntityTypeBuilder<Note> b)
+    {
+        b.ToTable("notes");
+        b.HasKey(x => x.Id);
+        b.Property(x => x.Id).ValueGeneratedNever();
+        b.Property(x => x.Content).HasMaxLength(Note.MaxLength).IsRequired();
+        b.HasIndex(x => x.UserId);
+        b.HasIndex(x => x.ExpiresAt);
+        b.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
     }
 }
 

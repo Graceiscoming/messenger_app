@@ -24,7 +24,15 @@ internal sealed class MessageService(
 {
     private const int MaxPageSize = 100;
 
-    public async Task<MessageDto> SendAsync(Guid me, Guid conversationId, SendMessageDto dto, CancellationToken ct = default)
+    public Task<MessageDto> SendAsync(Guid me, Guid conversationId, SendMessageDto dto, CancellationToken ct = default)
+        => SendCoreAsync(me, conversationId, dto, null, ct);
+
+    public Task<MessageDto> SendNoteReplyAsync(Guid me, Guid conversationId, string? content, string noteContent,
+        CancellationToken ct = default)
+        => SendCoreAsync(me, conversationId, new SendMessageDto(MessageType.Text, content, null, null, null), noteContent, ct);
+
+    private async Task<MessageDto> SendCoreAsync(Guid me, Guid conversationId, SendMessageDto dto, string? noteContent,
+        CancellationToken ct)
     {
         var conversation = await conversations.FindByIdWithMembersAsync(conversationId, ct)
                            ?? throw new NotFoundException("Conversation not found.");
@@ -59,7 +67,7 @@ internal sealed class MessageService(
                 if (dto.AttachmentId is not null || dto.StickerId is not null)
                     throw new ValidationException("type", "Text messages cannot carry an attachment or sticker.");
                 var text = ValidateText(dto.Content, chat.Value.MaxMessageLength, required: true)!;
-                message = Message.CreateText(conversationId, me, text, dto.ReplyToMessageId, now);
+                message = Message.CreateText(conversationId, me, text, dto.ReplyToMessageId, now, noteContent);
                 break;
 
             case MessageType.Image:

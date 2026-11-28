@@ -64,6 +64,20 @@ public interface IMessageService
     Task<IReadOnlyList<MessageDto>> GetHistoryAsync(Guid me, Guid conversationId, long? beforeId, int limit, CancellationToken ct = default);
     Task UnsendAsync(Guid me, long messageId, CancellationToken ct = default);
     Task<IReadOnlyList<StickerPackDto>> ListStickersAsync(CancellationToken ct = default);
+    /// <summary>Sends a text message that quotes a note (same rules as SendAsync for a text message).</summary>
+    Task<MessageDto> SendNoteReplyAsync(Guid me, Guid conversationId, string? content, string noteContent, CancellationToken ct = default);
+}
+
+public interface INoteService
+{
+    /// <summary>The caller's own active note first, then friends' active notes (newest first); blocked users excluded.</summary>
+    Task<IReadOnlyList<NoteDto>> ListAsync(Guid me, CancellationToken ct = default);
+    /// <summary>Posts a note, replacing any previous one. 1..60 chars. Visible to friends for 24 h.</summary>
+    Task<NoteDto> SetAsync(Guid me, string? content, CancellationToken ct = default);
+    /// <summary>Removes the caller's note (no-op if there is none).</summary>
+    Task DeleteAsync(Guid me, CancellationToken ct = default);
+    /// <summary>Replies to a friend's active note: a text message in the direct chat quoting the note.</summary>
+    Task<MessageDto> ReplyAsync(Guid me, Guid noteId, string? content, CancellationToken ct = default);
 }
 
 public interface IFileStorageService

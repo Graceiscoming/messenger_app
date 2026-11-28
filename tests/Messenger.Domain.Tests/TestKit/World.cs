@@ -88,6 +88,7 @@ public sealed class World
         s.AddSingleton(Db.AttachmentRepo);
         s.AddSingleton(Db.StickerRepo);
         s.AddSingleton(Db.RefreshTokenRepo);
+        s.AddSingleton(Db.NoteRepo);
         s.AddSingleton<IClock>(Clock);
         s.AddSingleton<IPasswordHasher, FakeHasher>();
         s.AddSingleton<ITokenService, FakeTokens>();
@@ -109,6 +110,7 @@ public sealed class World
     public IConversationService Conversations => Get<IConversationService>();
     public IMessageService Messages => Get<IMessageService>();
     public IFileStorageService Files => Get<IFileStorageService>();
+    public INoteService Notes => Get<INoteService>();
 
     public User AddUser(string username, string? displayName = null)
     {

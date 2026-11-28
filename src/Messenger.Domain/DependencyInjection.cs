@@ -23,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<IFriendService, FriendService>();
         services.AddScoped<IConversationService, ConversationService>();
         services.AddScoped<IMessageService, MessageService>();
+        services.AddScoped<INoteService, NoteService>();
         services.AddScoped<IFileStorageService, FileStorageService>();
         return services;
     }

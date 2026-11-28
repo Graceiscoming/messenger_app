@@ -22,6 +22,7 @@ public static class HubEvents
     public const string FriendRemoved = "FriendRemoved";
     public const string PresenceChanged = "PresenceChanged";
     public const string UserTyping = "UserTyping";
+    public const string NotesChanged = "NotesChanged";
 }
 
 public sealed class SignalRNotifier(IHubContext<ChatHub> hub, PresenceTracker presence) : IRealtimeNotifier
@@ -32,6 +33,14 @@ public sealed class SignalRNotifier(IHubContext<ChatHub> hub, PresenceTracker pr
         return groups.Count == 0
             ? Task.CompletedTask
             : hub.Clients.Groups(groups).SendAsync(HubEvents.MessageReceived, message, ct);
+    }
+
+    public Task NotifyNotesChanged(IEnumerable<Guid> recipientIds, Guid authorId, CancellationToken ct = default)
+    {
+        var groups = recipientIds.Distinct().Select(HubGroups.User).ToList();
+        return groups.Count == 0
+            ? Task.CompletedTask
+            : hub.Clients.Groups(groups).SendAsync(HubEvents.NotesChanged, new { userId = authorId }, ct);
     }
 
     public Task NotifyMessageUnsent(Guid conversationId, long messageId, CancellationToken ct = default)

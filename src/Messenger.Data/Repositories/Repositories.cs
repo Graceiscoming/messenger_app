@@ -202,6 +202,25 @@ internal sealed class StickerRepository(MessengerDbContext db) : IStickerReposit
         => db.Stickers.FirstOrDefaultAsync(s => s.Id == id, ct);
 }
 
+internal sealed class NoteRepository(MessengerDbContext db) : INoteRepository
+{
+    public Task<Note?> FindByIdAsync(Guid id, CancellationToken ct = default)
+        => db.Notes.Include(n => n.User).FirstOrDefaultAsync(n => n.Id == id, ct);
+
+    public async Task<IReadOnlyList<Note>> ListByUserAsync(Guid userId, CancellationToken ct = default)
+        => await db.Notes.Where(n => n.UserId == userId).ToListAsync(ct);
+
+    public async Task<IReadOnlyList<Note>> ListActiveByUsersAsync(IReadOnlyCollection<Guid> userIds, DateTime now,
+        CancellationToken ct = default)
+        => await db.Notes.AsNoTracking().Include(n => n.User)
+            .Where(n => userIds.Contains(n.UserId) && n.ExpiresAt > now)
+            .OrderByDescending(n => n.CreatedAt)
+            .ToListAsync(ct);
+
+    public async Task AddAsync(Note note, CancellationToken ct = default) => await db.Notes.AddAsync(note, ct);
+    public void Remove(Note note) => db.Notes.Remove(note);
+}
+
 internal sealed class RefreshTokenRepository(MessengerDbContext db) : IRefreshTokenRepository
 {
     public async Task AddAsync(RefreshToken token, CancellationToken ct = default) => await db.RefreshTokens.AddAsync(token, ct);

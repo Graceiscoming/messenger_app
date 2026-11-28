@@ -18,6 +18,7 @@ public sealed class MessengerDbContext(DbContextOptions<MessengerDbContext> opti
     public DbSet<Attachment> Attachments => Set<Attachment>();
     public DbSet<StickerPack> StickerPacks => Set<StickerPack>();
     public DbSet<Sticker> Stickers => Set<Sticker>();
+    public DbSet<Note> Notes => Set<Note>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(MessengerDbContext).Assembly);

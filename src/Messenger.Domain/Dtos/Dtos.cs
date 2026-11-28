@@ -20,10 +20,15 @@ public sealed record StickerDto(int Id, string Code, string ImageUrl);
 public sealed record StickerPackDto(int Id, string Name, string? ThumbnailUrl, IReadOnlyList<StickerDto> Stickers);
 /// <summary>Preview of the replied-to message. Content is null when that message was unsent.</summary>
 public sealed record ReplyPreviewDto(long Id, Guid SenderId, string SenderDisplayName, MessageType Type, string? Content, bool IsUnsent);
+/// <summary>The note a message replied to (text snapshot). The note's owner is the other member of the direct chat.</summary>
+public sealed record NoteReplyDto(string Content);
 public sealed record MessageDto(
     long Id, Guid ConversationId, UserDto Sender, MessageType Type,
     string? Content, string? AttachmentUrl, StickerDto? Sticker, ReplyPreviewDto? ReplyTo,
-    DateTime CreatedAt, bool IsUnsent);
+    DateTime CreatedAt, bool IsUnsent, NoteReplyDto? NoteReply = null);
+
+// ---- Notes ----
+public sealed record NoteDto(Guid Id, UserDto User, string Content, DateTime CreatedAt, DateTime ExpiresAt);
 
 // ---- Conversations ----
 public sealed record ConversationMemberDto(UserDto User, MemberRole Role, long? LastReadMessageId);

@@ -11,7 +11,7 @@ import { clearTyping, setTyping } from '../store/typing'
 import { notifyIncoming } from '../utils/notify'
 import type {
   ConversationDto, FriendRemovedEvent, FriendshipDto, MessageDto, MessageReadEvent, MessageUnsentEvent,
-  PresenceChangedEvent, UserTypingEvent,
+  NotesChangedEvent, PresenceChangedEvent, UserTypingEvent,
 } from '../types/api'
 
 /**
@@ -88,6 +88,12 @@ export function useRealtime(meId: string) {
 
     hub.on('FriendRemoved', ({ userId }: FriendRemovedEvent) => {
       setFriends(qc, (list) => list.filter((f) => f.user.id !== userId))
+      void qc.invalidateQueries({ queryKey: keys.notes }) // their note is no longer visible
+    })
+
+    // Someone (a friend or this user on another device) posted/deleted a note: refetch the small list.
+    hub.on('NotesChanged', (_e: NotesChangedEvent) => {
+      void qc.invalidateQueries({ queryKey: keys.notes })
     })
 
     hub.on('PresenceChanged', ({ userId, isOnline }: PresenceChangedEvent) => {
@@ -102,6 +108,7 @@ export function useRealtime(meId: string) {
       void qc.invalidateQueries({ queryKey: keys.conversations })
       void qc.invalidateQueries({ queryKey: keys.friends })
       void qc.invalidateQueries({ queryKey: keys.requests })
+      void qc.invalidateQueries({ queryKey: keys.notes })
       void qc.invalidateQueries({ queryKey: ['messages'] })
     })
 

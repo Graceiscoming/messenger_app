@@ -1,6 +1,6 @@
 import type {
   AuthResultDto, ConversationDto, FriendDto, FriendRequestsDto, FriendshipDto, MessageDto, SendMessageDto,
-  StickerPackDto, AttachmentDto, UserDto, MemberRole,
+  StickerPackDto, AttachmentDto, UserDto, MemberRole, NoteDto,
 } from '../types/api'
 import { request } from './client'
 import { PAGE_SIZE } from '../constants'
@@ -65,6 +65,13 @@ export const messagesApi = {
     request<MessageDto[]>('GET', `/conversations/${convId}/messages`, { query: { beforeId, limit: PAGE_SIZE } }),
   send: (convId: string, b: SendMessageDto) => json<MessageDto>('POST', `/conversations/${convId}/messages`, b),
   unsend: (id: number) => json<void>('DELETE', `/messages/${id}`),
+}
+
+export const notesApi = {
+  list: () => json<NoteDto[]>('GET', '/notes'),
+  set: (content: string) => json<NoteDto>('PUT', '/notes/me', { content }),
+  remove: () => json<void>('DELETE', '/notes/me'),
+  reply: (noteId: string, content: string) => json<MessageDto>('POST', `/notes/${noteId}/replies`, { content }),
 }
 
 export const filesApi = {

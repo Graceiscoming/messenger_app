@@ -6,6 +6,7 @@ import { useMe } from '../store/authContext'
 import { convAvatar, convTitle, formatListTime, messagePreview, otherMember } from '../utils/format'
 import Avatar from './Avatar'
 import { ChatIcon, SearchIcon } from './icons'
+import NotesBar from './NotesBar'
 import { EmptyState, ListSkeleton } from './Skeletons'
 
 export default function ConversationList() {
@@ -25,6 +26,7 @@ export default function ConversationList() {
           <input placeholder={t('chats.search')} aria-label={t('chats.search')} value={q} onChange={(e) => setQ(e.target.value)} />
         </label>
       </div>
+      {!q && <NotesBar />}
       {isLoading && <ListSkeleton />}
       {isError && <p className="empty error">{t('chats.loadError')}</p>}
       {!isLoading && !isError && list.length === 0 && (

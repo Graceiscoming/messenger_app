@@ -14,6 +14,8 @@ public sealed class Message
     public Guid? AttachmentId { get; private set; }
     public int? StickerId { get; private set; }
     public long? ReplyToMessageId { get; private set; }
+    /// <summary>Snapshot of the note text this message replies to (notes expire, so the text is copied).</summary>
+    public string? NoteReplyContent { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UnsentAt { get; private set; }
 
@@ -24,10 +26,11 @@ public sealed class Message
 
     public bool IsUnsent => UnsentAt is not null;
 
-    public static Message CreateText(Guid conversationId, Guid senderId, string content, long? replyTo, DateTime now) => new()
+    public static Message CreateText(Guid conversationId, Guid senderId, string content, long? replyTo, DateTime now,
+        string? noteReplyContent = null) => new()
     {
         ConversationId = conversationId, SenderId = senderId, Type = MessageType.Text,
-        Content = content, ReplyToMessageId = replyTo, CreatedAt = now,
+        Content = content, ReplyToMessageId = replyTo, NoteReplyContent = noteReplyContent, CreatedAt = now,
     };
 
     public static Message CreateImage(Guid conversationId, Guid senderId, Guid attachmentId, string? caption, long? replyTo, DateTime now) => new()
@@ -56,6 +59,7 @@ public sealed class Message
     {
         UnsentAt = now;
         Content = null;
+        NoteReplyContent = null;
         AttachmentId = null;
         StickerId = null;
         Sticker = null;

@@ -41,8 +41,13 @@ internal static class Mapper
             unsent ? null : m.Content,
             unsent ? null : FileUrl(m.AttachmentId),
             unsent ? null : m.Sticker?.ToDto(),
-            reply, m.CreatedAt, unsent);
+            reply, m.CreatedAt, unsent,
+            unsent || m.NoteReplyContent is null ? null : new NoteReplyDto(m.NoteReplyContent));
     }
+
+    public static NoteDto ToDto(this Note n)
+        => new(n.Id, (n.User ?? throw new InvalidOperationException("Note.User not loaded")).ToDto(),
+            n.Content, n.CreatedAt, n.ExpiresAt);
 }
 
 internal static partial class Rules
@@ -67,6 +72,17 @@ internal static partial class Rules
     {
         if (string.IsNullOrWhiteSpace(name) || name.Trim().Length > 50)
             throw new ValidationException("displayName", "Display name must be 1-50 characters.");
+    }
+
+    /// <summary>Notes: 1..60 characters after trimming, not whitespace-only.</summary>
+    public static string NoteContent(string? content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+            throw new ValidationException("content", "Note content is required.");
+        var trimmed = content.Trim();
+        if (trimmed.Length > Note.MaxLength)
+            throw new ValidationException("content", $"A note must be at most {Note.MaxLength} characters.");
+        return trimmed;
     }
 
     public static void GroupName(string? name)

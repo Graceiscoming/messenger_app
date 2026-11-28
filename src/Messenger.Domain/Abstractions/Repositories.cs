@@ -105,6 +105,18 @@ public interface IStickerRepository
     Task<Sticker?> FindByIdAsync(int id, CancellationToken ct = default);
 }
 
+public interface INoteRepository
+{
+    /// <summary>Tracked; User loaded.</summary>
+    Task<Note?> FindByIdAsync(Guid id, CancellationToken ct = default);
+    /// <summary>All notes of the user (expired too), tracked: used to replace or delete them.</summary>
+    Task<IReadOnlyList<Note>> ListByUserAsync(Guid userId, CancellationToken ct = default);
+    /// <summary>Notes with ExpiresAt &gt; now for the given users, User loaded, newest first.</summary>
+    Task<IReadOnlyList<Note>> ListActiveByUsersAsync(IReadOnlyCollection<Guid> userIds, DateTime now, CancellationToken ct = default);
+    Task AddAsync(Note note, CancellationToken ct = default);
+    void Remove(Note note);
+}
+
 public interface IRefreshTokenRepository
 {
     Task AddAsync(RefreshToken token, CancellationToken ct = default);
